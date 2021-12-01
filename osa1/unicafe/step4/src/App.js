@@ -45,8 +45,19 @@ const App = () => {
       setPositive(0);
     }
   };
-  
-return (
+
+  if (all === 0) {
+    return (
+      <div>
+        <Title title='give feedback' />
+        <Button handleClick={handleGood} text='good' />
+        <Button handleClick={handleNeutral} text='neutral' />
+        <Button handleClick={handleBad} text='bad' />
+        <Title title='statistics' />
+        <Stats text='No feedback given' />
+      </div>
+    )
+  } else return (
     <div>
       <Title title='give feedback' />
       <Button handleClick={handleGood} text='good' />
@@ -63,4 +74,4 @@ return (
   )
 }
 
-export default App
+export default App;
