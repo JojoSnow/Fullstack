@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Note from './components/Note'
+import axios from 'axios'
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -16,7 +16,7 @@ const App = () => {
         setNotes(response.data)
       })
   }, [])
-  console.log('render', notes.length, 'notes')
+  console.log('render', notes.length, 'notes', notes)
   
   const addNote = (event) => {
     event.preventDefault();
