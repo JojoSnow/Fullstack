@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import personService from './services/persons';
-// import axios from 'axios';
+import axios from 'axios';
 
 const Filter = (props) => {
   return (
@@ -47,6 +47,12 @@ const Persons = (props) => {
           {names.map(person =>
               <p key={person.id}>
                   {person.name} {person.number}
+                  <button 
+                    id={person.id} 
+                    onClick={props.handleNameDel} 
+                  >
+                    delete
+                  </button>
               </p>
           )}
       </>
@@ -98,6 +104,18 @@ const App = () => {
     }
   }
 
+  const handleNameDel = (event) => {
+    const id = event.target.id;
+    const name = persons[id - 1].name;
+    
+    if (window.confirm(`Delete ${name} ?`)) {
+      axios
+        .delete(`http://localhost:3001/persons/${id}`);
+
+      window.location.reload();
+    }
+  }
+
   const handleNameChange = (event) => {
     setNewName(event.target.value);
   }
@@ -126,7 +144,7 @@ const App = () => {
       <h2>Numbers</h2>
 
       <div>
-        <Persons persons={persons} filterName={filterName} />
+        <Persons persons={persons} filterName={filterName} handleNameDel={handleNameDel} />
       </div>
     </div>
   );
