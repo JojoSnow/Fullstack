@@ -81,14 +81,22 @@ const App = () => {
     };
 
     const name = persons.filter(person => person.name === newName);
-    
+    console.log(name)
     if (name.length > 0) {
       if (name[0].name === newName) {
-        alert(`${newName} is already added to Phonebook`);
-        setNewName('');
-        setNewNum('');
-        setFilterName('');
+        if (window.confirm(`${newName} is already added to Phonebook, replace the old number with a new one?`)) {
+          
+          axios
+            .put(`http://localhost:3001/persons/${name[0].id}`, personObject)
+          
+          setNewName('');
+          setNewNum('');
+          setFilterName('');
+          
+          window.location.reload();
       }
+        
+      } 
     } else {
       personService
         .create(personObject)
