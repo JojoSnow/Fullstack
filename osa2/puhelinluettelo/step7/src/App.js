@@ -59,11 +59,23 @@ const Persons = (props) => {
   )
 }
 
+const Notification = ({message}) => {
+  if (message === null) {
+    return null
+  }
+  return (
+    <div className="error">
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([]); 
   const [newName, setNewName] = useState('');
   const [newNum, setNewNum] = useState('');
   const [filterName, setFilterName] = useState('');
+  const [message, setMessage] = useState('');
   
   useEffect(() => {
     personService
@@ -81,31 +93,55 @@ const App = () => {
     };
 
     const name = persons.filter(person => person.name === newName);
-    console.log(name)
-    if (name.length > 0) {
-      if (name[0].name === newName) {
-        if (window.confirm(`${newName} is already added to Phonebook, replace the old number with a new one?`)) {
+
+    if (newName.length !== 0) {
+      if (name.length !== 0) {
+        if (name[0].name === newName) {
+          // if (window.confirm(`${newName} is already added to Phonebook, replace the old number with a new one?`)) {
+
+          //   axios
+          //     .put(`http://localhost:3001/persons/${name[0].id}`, personObject)
+            
+          //   setNewName('');
+          //   setNewNum('');
+          //   setFilterName('');
+            
+          //   window.location.reload();
+          // }
+
+          personService
+            .update(name[0].id, personObject)
+            .then(error => {
+              setMessage(
+                `Changed ${name[0].name} number`
+              )
+              setTimeout(() => {
+                setMessage(null)
+                window.location.reload()
+              }, 3000)
+              setNewName('');
+              setNewNum('');
+              setFilterName('');
+            })
+        }
+      } else {          
+        personService
+          .create(personObject)
+          .then(response => {
+            setPersons(persons.concat(response))
+            setMessage(
+              `Added ${newName}`
+            )
+            setTimeout(() => {
+              setMessage(null)
+              window.location.reload()
+            }, 3000)
+            setNewName('');
+            setNewNum('');
+            setFilterName('');
+          })
           
-          axios
-            .put(`http://localhost:3001/persons/${name[0].id}`, personObject)
-          
-          setNewName('');
-          setNewNum('');
-          setFilterName('');
-          
-          window.location.reload();
-      }
-        
-      } 
-    } else {
-      personService
-        .create(personObject)
-        .then(response => {
-          setPersons(persons.concat(response))
-          setNewName('');
-          setNewNum('');
-          setFilterName('');
-        })
+    } 
 
       // axios
       //   .post('http://localhost:3001/persons', personObject)
@@ -115,13 +151,23 @@ const App = () => {
   const handleNameDel = (event) => {
     const id = event.target.id;
     const name = persons[id - 1].name;
-    
-    if (window.confirm(`Delete ${name} ?`)) {
-      axios
-        .delete(`http://localhost:3001/persons/${id}`);
 
-      window.location.reload();
-    }
+    personService
+        .del(id)
+        .then(error => {
+          setMessage(
+            `Deleted ${name}`
+          )
+          setTimeout(() => {
+            setMessage(null)
+            window.location.reload()
+          }, 3000);
+        })
+    
+    // if (window.confirm(`Delete ${name} ?`)) {
+      // axios
+      //   .delete(`http://localhost:3001/persons/${id}`);      
+    // }
   }
 
   const handleNameChange = (event) => {
@@ -139,6 +185,8 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+
+        <Notification message={message} />
 
         <Filter filterName={filterName} handleFilterName={handleFilterName} />
 
