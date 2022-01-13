@@ -73,8 +73,6 @@ app.post('/api/persons', (request, response) => {
         });
     }
 
-    console.log(body)
-
     const person = {
         id: generateId(5, 10000),
         name: body.name,
@@ -84,8 +82,6 @@ app.post('/api/persons', (request, response) => {
     persons = persons.concat(person);
 
     response.json(body);
-
-    
 })
 
 const PORT = 3001
