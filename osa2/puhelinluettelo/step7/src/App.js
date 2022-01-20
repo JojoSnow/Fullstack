@@ -150,7 +150,7 @@ const App = () => {
 
   const handleNameDel = (event) => {
     const id = event.target.id;
-    const nameObject = persons.find(n => n.id == id)
+    const nameObject = persons.find(n => n.id === id)
     const name = nameObject.name
 
     personService
