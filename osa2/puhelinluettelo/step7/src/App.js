@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import personService from './services/persons';
-import axios from 'axios';
+import Person from './components/Person.js';
+// import axios from 'axios';
 
 const Filter = (props) => {
   return (
@@ -37,28 +38,6 @@ const PersonForm = (props) => {
   )
 }
 
-const Persons = (props) => {
-  const {persons} = props;
-  const names = persons.filter(person => 
-    person.name.toLowerCase().includes(props.filterName.toLowerCase()));
-
-  return (
-      <>
-          {names.map(person =>
-              <p key={person.id}>
-                  {person.name} {person.number}
-                  <button 
-                    id={person.id} 
-                    onClick={props.handleNameDel} 
-                  >
-                    delete
-                  </button>
-              </p>
-          )}
-      </>
-  )
-}
-
 const Notification = ({message}) => {
   if (message === null) {
     return null
@@ -84,7 +63,7 @@ const App = () => {
         setPersons(response);
       });
   }, []);
-  
+
   const addPerson = (event) => {
     event.preventDefault();
     const personObject = {
@@ -201,7 +180,14 @@ const App = () => {
       <h2>Numbers</h2>
 
       <div>
-        <Persons persons={persons} filterName={filterName} handleNameDel={handleNameDel} />
+        {persons.map(person =>
+          <Person 
+            key={person.id} 
+            person={person}
+            filterName={filterName}
+            handleNameDel={handleNameDel} />
+        )}
+        
       </div>
     </div>
   );

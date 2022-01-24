@@ -22,4 +22,6 @@ const del = (id) => {
     return request.then(response => response.data)
 }
 
-export default {getAll, create, del, update};
+const exportedObject = { getAll, create, del, update };
+
+export default exportedObject;
