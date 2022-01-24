@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import personService from './services/persons';
 import Person from './components/Person.js';
-// import axios from 'axios';
 
 const Filter = (props) => {
   return (
@@ -76,18 +75,6 @@ const App = () => {
     if (newName.length !== 0) {
       if (name.length !== 0) {
         if (name[0].name === newName) {
-          // if (window.confirm(`${newName} is already added to Phonebook, replace the old number with a new one?`)) {
-
-          //   axios
-          //     .put(`http://localhost:3001/persons/${name[0].id}`, personObject)
-            
-          //   setNewName('');
-          //   setNewNum('');
-          //   setFilterName('');
-            
-          //   window.location.reload();
-          // }
-
           personService
             .update(name[0].id, personObject)
             .then(error => {
@@ -120,10 +107,7 @@ const App = () => {
             setFilterName('');
           })
           
-    } 
-
-      // axios
-      //   .post('http://localhost:3001/persons', personObject)
+      } 
     }
   }
 
@@ -143,11 +127,6 @@ const App = () => {
             window.location.reload()
           }, 3000);
         })
-    
-    // if (window.confirm(`Delete ${name} ?`)) {
-      // axios
-      //   .delete(`http://localhost:3001/persons/${id}`);      
-    // }
   }
 
   const handleNameChange = (event) => {
