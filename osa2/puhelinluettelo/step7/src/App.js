@@ -107,7 +107,7 @@ const App = () => {
             setFilterName('');
           })
           .catch(error => {
-            setMessage(error.response.name, error.response.message)
+            setMessage(error.response.data.name, error.response.data.message)
           })
           
       } 
