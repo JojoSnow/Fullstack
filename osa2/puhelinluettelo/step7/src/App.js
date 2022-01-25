@@ -107,7 +107,7 @@ const App = () => {
             setFilterName('');
           })
           .catch(error => {
-            console.log(error.response.data)
+            setMessage(error.personse.data)
           })
           
       } 
