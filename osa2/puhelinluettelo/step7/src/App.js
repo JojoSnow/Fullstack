@@ -106,6 +106,9 @@ const App = () => {
             setNewNum('');
             setFilterName('');
           })
+          .catch(error => {
+            console.log(error.response.data)
+          })
           
       } 
     }
