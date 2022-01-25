@@ -165,9 +165,9 @@ const App = () => {
         {persons.map(person =>
           <Person 
             key={person.id} 
-            person={person}
-            filterName={filterName}
-            handleNameDel={handleNameDel} />
+            person={person} 
+            handleNameDel={handleNameDel} 
+          />
         )}
         
       </div>

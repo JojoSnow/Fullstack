@@ -1,8 +1,6 @@
 import React from 'react';
 
-const Person = ({ person, filterName, handleNameDel }) => {
-    const name = person.name.toLowerCase().includes(filterName.toLowerCase());
-    console.log(name)
+const Person = ({ person, handleNameDel }) => {
   
     return (
         <>
