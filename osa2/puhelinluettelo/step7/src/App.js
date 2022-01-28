@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import personService from './services/persons';
 import Person from './components/Person.js';
+import { getNextKeyDef } from '@testing-library/user-event/dist/keyboard/getNextKeyDef';
 
 const Filter = (props) => {
   return (
@@ -93,8 +94,8 @@ const App = () => {
       } else {          
         personService
           .create(personObject)
-          .then(response => {
-            setPersons(persons.concat(response))
+          .then(createdPerson => {
+            setPersons(persons.concat(createdPerson))
             setMessage(
               `Added ${newName}`
             )
@@ -107,7 +108,7 @@ const App = () => {
             setFilterName('');
           })
           .catch(error => {
-            setMessage(error.response.data.name, error.response.data.message)
+            setMessage(error.response.data.error)
           })
           
       } 
