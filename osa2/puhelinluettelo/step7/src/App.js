@@ -109,6 +109,10 @@ const App = () => {
           })
           .catch(error => {
             setMessage(error.response.data.error)
+            setTimeout(() => {
+              setMessage(null)
+              window.location.reload()
+            }, 3000)
           })
           
       } 
