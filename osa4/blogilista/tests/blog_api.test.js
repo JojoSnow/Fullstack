@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
+const Blog = require('../models/blog')
 const helper = require('./test_helper')
 
 const api = supertest(app)
@@ -24,7 +25,7 @@ test('a valid blog can be added ', async () => {
 	const newBlog = {
 		'title': 'Hobbit',
 		'author': 'J.R.R. Tolkien',
-		'url': 'unknown',
+		'url': 'got stolen by a dragon',
 		'likes': '200'
 	}
   
@@ -46,8 +47,7 @@ test('a blog without likes can be added', async () => {
 	const newBlog = {
 		'title': 'Vampire Lestat',
 		'author': 'Anne Rice',
-		'url': 'got eaten by a vampire',
-		'likes': ''
+		'url': 'got eaten by a vampire'
 	}
 
 	await api
@@ -58,6 +58,32 @@ test('a blog without likes can be added', async () => {
 	expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
 })
 
+test('a blog without author or url is not valid', async () => {
+
+	const blogNoUrl = {
+		'title': 'Cash',
+		'author': 'Johnny Cash',
+		'likes': '20'
+	}
+
+	const blogNoAuthor = {
+		'author': 'Johnny Cash',
+		'url': 'never left the building',
+		'likes': '20'
+	}
+
+	await api
+		.post('/api/blogs')
+		.send(blogNoUrl)
+		.expect(400)
+
+	await api
+		.post('/api/blogs')
+		.send(blogNoAuthor)
+		.expect(400)
+
+})
+
 afterAll(() => {
-  mongoose.connection.close()
+	mongoose.connection.close()
 })

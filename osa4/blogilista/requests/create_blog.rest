@@ -5,5 +5,5 @@ Content-Type: application/json
 	"title": "All The Light We See",
 	"author": "Hannes Turner",
 	"url": "unknown",
-	"likes": ""
+	"likes": "12"
 }
