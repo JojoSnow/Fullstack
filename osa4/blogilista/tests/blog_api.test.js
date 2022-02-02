@@ -37,9 +37,26 @@ test('a valid blog can be added ', async () => {
 	const blogs = await helper.blogsInDb()
 	expect(blogs).toHaveLength(response.body.length + 1)
   
-	const titles = blogs.map(n => n.title)
+	const titles = blogs.map(blog => blog.title)
 	expect(titles).toContain('Hobbit')
-  })
+})
+
+test('a blog without likes can be added', async () => {
+
+	const newBlog = {
+		'title': 'Vampire Lestat',
+		'author': 'Anne Rice',
+		'url': 'got eaten by a vampire',
+		'likes': ''
+	}
+
+	await api
+		.post('/api/blogs')
+		.send(newBlog)
+
+	const blogsAtEnd = await helper.blogsInDb()
+	expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
+})
 
 afterAll(() => {
   mongoose.connection.close()
