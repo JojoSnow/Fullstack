@@ -1,10 +1,18 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-const Blog = require('../models/blog')
 const helper = require('./test_helper')
 
 const api = supertest(app)
+
+const Blog = require('../models/blog')
+const blog = require('../models/blog')
+
+beforeEach(async () => {
+	await Blog.deleteMany({})
+
+	await blog.insertMany(helper.initialBlogs)
+})
 
 test('blogs are returned as json', async () => {
 	await api
@@ -82,6 +90,21 @@ test('a blog without author or url is not valid', async () => {
 		.send(blogNoAuthor)
 		.expect(400)
 
+})
+
+test('a blog can be deleted', async () => {
+	const blogsAtStart = await helper.blogsInDb()
+	const blogToDel = await blogsAtStart[0]
+
+	await api
+		.delete(`/api/blogs/${blogToDel.id}`)
+		.expect(204)
+
+	const blogsAtEnd = await helper.blogsInDb()
+	expect(blogsAtEnd.length).toBe(blogsAtStart.length - 1)
+
+	const titles = blogsAtEnd.map(blog => blog.title)
+	expect(titles).not.toContain(blogToDel.title)
 })
 
 afterAll(() => {

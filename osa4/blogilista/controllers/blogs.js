@@ -3,13 +3,22 @@ const Blog = require('../models/blog')
 
 blogsRouter.get('/', (request, response) => {
 	Blog
-	  .find({})
-	  .then(blogs => {
-		response.json(blogs.map(blog => blog.toJSON()))
-	  })
-  })
-  
-  blogsRouter.post('/', (request, response, next) => {
+		.find({})
+		.then(blogs => {
+			response.json(blogs.map(blog => blog.toJSON()))
+		})
+})
+
+blogsRouter.get('/:id', async (request, response) => {
+	const blog = await Blog.findById(request.params.id)
+	if (blog) {
+		response.json(blog.toJSON())
+	} else {
+		response.status(404).end()
+	}
+})
+
+blogsRouter.post('/', (request, response, next) => {
 	const blog = new Blog(request.body)
 
 	if (!(blog.title) || !(blog.url)) {
@@ -19,13 +28,18 @@ blogsRouter.get('/', (request, response) => {
 	if (!blog.likes) {
 		blog.likes = 0
 	}
-  
+
 	blog
-	  .save()
-	  .then(result => {
+		.save()
+		.then(result => {
 		response.status(201).json(result.toJSON())
-	  })
-	  .catch(error => next(error))
-  })
+		})
+		.catch(error => next(error))
+	})
+
+blogsRouter.delete('/:id', async (request, response) => {
+	await Blog.findByIdAndRemove(request.params.id)
+	response.status(204).end()
+})
 
 module.exports = blogsRouter
