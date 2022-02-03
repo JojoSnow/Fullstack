@@ -23,7 +23,7 @@ test('blogs are returned as json', async () => {
 
 test('blogs have correct id tag', async () => {
 	const response = await api.get('/api/blogs')
-	const ids = response.body.map(blog => blog.id)
+	const ids = response.body.map(b => b.id)
 	expect(ids).toBeDefined()
 })
 
@@ -46,7 +46,7 @@ test('a valid blog can be added ', async () => {
 	const blogs = await helper.blogsInDb()
 	expect(blogs).toHaveLength(response.body.length + 1)
   
-	const titles = blogs.map(blog => blog.title)
+	const titles = blogs.map(b => b.title)
 	expect(titles).toContain('Hobbit')
 })
 
@@ -103,8 +103,33 @@ test('a blog can be deleted', async () => {
 	const blogsAtEnd = await helper.blogsInDb()
 	expect(blogsAtEnd.length).toBe(blogsAtStart.length - 1)
 
-	const titles = blogsAtEnd.map(blog => blog.title)
+	const titles = blogsAtEnd.map(b => b.title)
 	expect(titles).not.toContain(blogToDel.title)
+})
+
+test('a blog can be updated', async () => {
+	const blogsAtStart = await helper.blogsInDb()
+	const blogToUpdate = blogsAtStart[0]
+	const newBlog = {
+		title: 'Hello World',
+		author: 'People of Earth',
+		url: 'buried deep in the earth',
+		likes: '1000'
+	}
+
+	await api
+		.put(`/api/blogs/${blogToUpdate.id}`)
+		.send(newBlog)
+		.expect(200)
+		.expect('Content-Type', /application\/json/)
+
+	const blogsAtEnd = await helper.blogsInDb()
+
+	const titles = blogsAtEnd.map(b => b.title)
+	const likes = blogsAtEnd.map(b => b.likes)
+
+	expect(titles).toContain('Hello World')
+	expect(likes).toContain(1000)
 })
 
 afterAll(() => {

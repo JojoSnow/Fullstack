@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/blogs/61fa35b730920d8451ae9a25
+Content-Type: application/json
+
+{
+	"title": "All The Light We See",
+	"author": "Hannes Turner",
+	"url": "unknown",
+	"likes": "14"
+}
