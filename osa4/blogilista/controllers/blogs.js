@@ -1,12 +1,12 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
-blogsRouter.get('/', (request, response) => {
-	Blog
+blogsRouter.get('/', async (request, response) => {
+	const blogs = await Blog
 		.find({})
-		.then(blogs => {
-			response.json(blogs.map(blog => blog.toJSON()))
-		})
+		.populate('user', {username: 1, name: 1, id: 1})
+	response.json(blogs.map(b => b.toJSON()))
 })
 
 blogsRouter.get('/:id', async (request, response) => {
@@ -18,8 +18,8 @@ blogsRouter.get('/:id', async (request, response) => {
 	}
 })
 
-blogsRouter.post('/', (request, response, next) => {
-	const blog = new Blog(request.body)
+blogsRouter.post('/', async (request, response) => {
+	const blog = request.body
 
 	if (!(blog.title) || !(blog.url)) {
 		return response.status(400).json({ error: 'content missing' })
@@ -29,13 +29,22 @@ blogsRouter.post('/', (request, response, next) => {
 		blog.likes = 0
 	}
 
-	blog
-		.save()
-		.then(result => {
-		response.status(201).json(result.toJSON())
-		})
-		.catch(error => next(error))
+	const user = await User.findById(blog.user)
+
+	const bloggie = new Blog({
+		title: blog.title,
+		author: blog.author,
+		url: blog.url,
+		likes: blog.likes,
+		user: user._id
 	})
+
+	const savedBlog = await bloggie.save()
+	user.blogs = user.blogs.concat(savedBlog._id)
+	await user.save()
+
+	response.json(savedBlog.toJSON())
+})
 
 blogsRouter.delete('/:id', async (request, response) => {
 	await Blog.findByIdAndRemove(request.params.id)
