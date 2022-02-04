@@ -152,8 +152,6 @@ describe('when there is initially one user at db', () => {
 		name: 'Matti Luukkainen',
 		password: 'salainen',
 	  }
-
-	  console.log(newUser)
   
 	  await api
 		.post('/api/users')
@@ -167,7 +165,31 @@ describe('when there is initially one user at db', () => {
 	  const usernames = usersAtEnd.map(u => u.username)
 	  expect(usernames).toContain(newUser.username)
 	})
-  })
+
+	test('creation fails with proper statuscode and message if username or password is too short', async () => {
+		const invalidUsername = {
+			username: 'hi',
+			name: 'hello world',
+			password: 'secret'
+		}
+	
+		const invalidPassword = {
+			username: 'Heppu',
+			name: 'hello world',
+			password: 'hi'
+		}
+	
+		await api
+			.post('/api/users')
+			.send(invalidUsername)
+			.expect(400)
+	
+		await api
+			.post('/api/users')
+			.send(invalidPassword)
+			.expect(400)
+	})
+})
 
 afterAll(() => {
 	mongoose.connection.close()
