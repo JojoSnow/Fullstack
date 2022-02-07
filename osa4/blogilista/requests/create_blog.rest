@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNub3d5IiwiaWQiOiI2MjAwYzQ1OWZmMmIxNmQ5N2FkYjZjZWUiLCJpYXQiOjE2NDQyMTg3OTl9.dPovFVHnThYrUYuArNXUu4CgJnBsYHX9HHl5Jdg3Jkk
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNub3d5IiwiaWQiOiI2MjAwYzQ1OWZmMmIxNmQ5N2FkYjZjZWUiLCJpYXQiOjE2NDQyMjMzMjl9.d5l86RgOCcxIwoFCGCOaNzbmkZzD87_CR7t4zf8tQD8
 
 {
 	"title": "Hello World",
