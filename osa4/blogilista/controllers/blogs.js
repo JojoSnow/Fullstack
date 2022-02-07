@@ -1,7 +1,7 @@
 const blogsRouter = require('express').Router()
-const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const {userExtractor} = require('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
 	const blogs = await Blog
@@ -19,9 +19,9 @@ blogsRouter.get('/:id', async (request, response) => {
 	}
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', userExtractor, async (request, response) => {
 	const blog = request.body
-	const decodedToken = jwt.verify(request.token, process.env.SECRET)
+	const decodedToken = request.user
 
 	if (!(blog.title) || !(blog.url)) {
 		return response.status(400).json({ error: 'content missing' })
@@ -52,8 +52,8 @@ blogsRouter.post('/', async (request, response) => {
 	response.json(savedBlog.toJSON())
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
-	const decodedToken = jwt.verify(request.token, process.env.SECRET)
+blogsRouter.delete('/:id', userExtractor, async (request, response) => {
+	const decodedToken = request.user
 	const blog = await Blog.findById(request.params.id)
 
 	if (decodedToken.id.toString() === blog.user.toString()) {
