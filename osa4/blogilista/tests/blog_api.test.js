@@ -10,6 +10,63 @@ const User = require('../models/user')
 const Blog = require('../models/blog')
 const blog = require('../models/blog')
 
+describe('when there is initially one user at db', () => {
+	beforeEach(async () => {
+		await User.deleteMany({})
+  
+		const passwordHash = await bcrypt.hash('sekret', 10)
+		const user = new User({ username: 'root', passwordHash })
+
+		await user.save()
+	})
+  
+	test('creation succeeds with a fresh username', async () => {
+		const usersAtStart = await helper.usersInDb()
+  
+		const newUser = {
+			username: 'mluukkai',
+			name: 'Matti Luukkainen',
+			password: 'salainen',
+		}
+  
+		await api
+			.post('/api/users')
+			.send(newUser)
+			.expect(200)
+			.expect('Content-Type', /application\/json/)
+  
+		const usersAtEnd = await helper.usersInDb()
+		expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+  
+		const usernames = usersAtEnd.map(u => u.username)
+		expect(usernames).toContain(newUser.username)
+	})
+
+	test('creation fails with proper statuscode and message if username or password is too short', async () => {
+		const invalidUsername = {
+			username: 'hi',
+			name: 'hello world',
+			password: 'secret'
+		}
+	
+		const invalidPassword = {
+			username: 'Heppu',
+			name: 'hello world',
+			password: 'hi'
+		}
+	
+		await api
+			.post('/api/users')
+			.send(invalidUsername)
+			.expect(400)
+	
+		await api
+			.post('/api/users')
+			.send(invalidPassword)
+			.expect(400)
+	})
+})
+
 beforeEach(async () => {
 	await Blog.deleteMany({})
 
@@ -30,7 +87,11 @@ test('blogs have correct id tag', async () => {
 })
 
 test('a valid blog can be added ', async () => {
-	const response = await api.get('/api/blogs')
+	const responseBlog = await api.get('/api/blogs')
+	const responseUser = await api.get('/api/users')
+	const body = await responseUser.body
+
+	console.log(body)
 
 	const newBlog = {
 		'title': 'Hobbit',
@@ -40,13 +101,14 @@ test('a valid blog can be added ', async () => {
 	}
   
 	await api
-	  .post('/api/blogs')
-	  .send(newBlog)
-	  .expect('Content-Type', /application\/json/)
+		.post('/api/blogs')
+		.set('Authorization', token)
+		.send(newBlog)
+		.expect('Content-Type', /application\/json/)
   
   
 	const blogs = await helper.blogsInDb()
-	expect(blogs).toHaveLength(response.body.length + 1)
+	expect(blogs).toHaveLength(responseBlog.body.length + 1)
   
 	const titles = blogs.map(b => b.title)
 	expect(titles).toContain('Hobbit')
@@ -134,62 +196,7 @@ test('a blog can be updated', async () => {
 	expect(likes).toContain(1000)
 })
 
-describe('when there is initially one user at db', () => {
-	beforeEach(async () => {
-	  await User.deleteMany({})
-  
-	  const passwordHash = await bcrypt.hash('sekret', 10)
-	  const user = new User({ username: 'root', passwordHash })
-  
-	  await user.save()
-	})
-  
-	test('creation succeeds with a fresh username', async () => {
-	  const usersAtStart = await helper.usersInDb()
-  
-	  const newUser = {
-		username: 'mluukkai',
-		name: 'Matti Luukkainen',
-		password: 'salainen',
-	  }
-  
-	  await api
-		.post('/api/users')
-		.send(newUser)
-		.expect(200)
-		.expect('Content-Type', /application\/json/)
-  
-	  const usersAtEnd = await helper.usersInDb()
-	  expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
-  
-	  const usernames = usersAtEnd.map(u => u.username)
-	  expect(usernames).toContain(newUser.username)
-	})
 
-	test('creation fails with proper statuscode and message if username or password is too short', async () => {
-		const invalidUsername = {
-			username: 'hi',
-			name: 'hello world',
-			password: 'secret'
-		}
-	
-		const invalidPassword = {
-			username: 'Heppu',
-			name: 'hello world',
-			password: 'hi'
-		}
-	
-		await api
-			.post('/api/users')
-			.send(invalidUsername)
-			.expect(400)
-	
-		await api
-			.post('/api/users')
-			.send(invalidPassword)
-			.expect(400)
-	})
-})
 
 afterAll(() => {
 	mongoose.connection.close()
