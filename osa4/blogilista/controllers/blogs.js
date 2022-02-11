@@ -20,6 +20,7 @@ blogsRouter.get('/:id', async (request, response) => {
 })
 
 blogsRouter.post('/', userExtractor, async (request, response) => {
+	console.log('reached post')
 	const blog = request.body
 	const decodedToken = request.user
 
@@ -50,6 +51,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 	await user.save()
 
 	response.json(savedBlog.toJSON())
+	console.log('blog created')
 })
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
