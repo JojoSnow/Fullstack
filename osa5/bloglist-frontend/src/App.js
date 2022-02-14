@@ -37,6 +37,7 @@ const App = () => {
 				'loggedBlogUser', JSON.stringify(newUser)
 			)
 
+			blogService.setToken(newUser.token)
     		setUser(newUser)
     		setUsername('')
     		setPassword('')
@@ -62,7 +63,6 @@ const App = () => {
 		await blogService
 			.create(blogObject)
 			.then(returnedBlog => {
-				console.log('created')
 				setBlogs(blogs.concat(returnedBlog))
 				setTitle('')
 				setAuthor('')
