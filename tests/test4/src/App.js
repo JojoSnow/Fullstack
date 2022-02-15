@@ -47,7 +47,7 @@ const App = () => {
     noteService
       .getAll()
         .then(initialNotes => {
-        setNotes(initialNotes)
+          setNotes(initialNotes)
       })
   }, [])
 
@@ -76,7 +76,8 @@ const App = () => {
     const changedNote = { ...note, important: !note.important }
 
     noteService
-      .update(changedNote).then(returnedNote => {
+      .update(changedNote)
+      .then(returnedNote => {
         setNotes(notes.map(n => n.id !== id ? n : returnedNote))
       })
       .catch(error => {
