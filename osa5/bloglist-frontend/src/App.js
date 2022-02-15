@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -8,9 +10,7 @@ const App = () => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [user, setUser] = useState(null)
-	const [title, setTitle] = useState('')
-	const [author, setAuthor] = useState('')
-	const [url, setUrl] = useState('')
+	const blogFormRef = useRef()
 
 	useEffect(() => {
     	blogService.getAll().then(bs =>
@@ -52,21 +52,12 @@ const App = () => {
 		setUser(null)
 	}
 
-	const addBlog = async (event) => {
-		event.preventDefault()
-		const blogObject = {
-			title: title,
-			author: author,
-			url: url
-		}
-
+	const addBlog = async (blogObject) => {
+		blogFormRef.current.toggleVisibility()
 		await blogService
 			.create(blogObject)
 			.then(returnedBlog => {
 				setBlogs(blogs.concat(returnedBlog))
-				setTitle('')
-				setAuthor('')
-				setUrl('')
 			})
 	}
 
@@ -87,27 +78,18 @@ const App = () => {
 		</form>
 	)
 
+	const blogForm = () => (
+		<Togglable buttonLabel="Create New Blog" ref={blogFormRef}>
+			<BlogForm createBlog={addBlog} />
+		</Togglable>	
+	)
+
 	const blogsDiv = () => (
 		<div>
     		{blogs.map(blog =>
     			<Blog key={blog.id} blog={blog} />
       		)}
     	</div>
-	)
-
-	const blogForm = () => (
-		<form onSubmit={addBlog}>
-			<label htmlFor="Title">Title:</label>
-			<input type="text" value={title} name="Title"
-			onChange={({target}) => setTitle(target.value)} /> <br/>
-			<label htmlFor="Author">Author:</label>
-			<input type="text" value={author} name="Author"
-			onChange={({target}) => setAuthor(target.value)} /> <br/>
-			<label htmlFor="Url">Url:</label>
-			<input type="text" value={url} name="Url"
-			onChange={({target}) => setUrl(target.value)} /> <br/>
-			<button type="submit">Create</button>
-		</form>
 	)
 
 	return (
@@ -121,11 +103,11 @@ const App = () => {
 					<h2>blogs</h2>
 						<p>{user.name} logged in <button onClick={handleLogout}>Logout</button></p>
 
-					<h2>create new</h2>
 						{blogForm()}
-						
+							
 						{blogsDiv()}
-				</div>}
+				</div>
+			}
 		</div>
 	)
 }
