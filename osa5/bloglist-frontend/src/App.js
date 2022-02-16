@@ -61,8 +61,13 @@ const App = () => {
 			})
 	}
 
+	const delBlog = async (id) => {
+		await blogService
+			.del(id)
+			.catch(error => console.log(error))
+	}
+
 	const addLike = async (id, blogObject) => {
-	
 		await blogService
 			.update(id, blogObject)
 			.catch(error => console.log(error))
@@ -96,7 +101,7 @@ const App = () => {
     		{blogs
 				.sort((a, b) => a.likes + b.likes)
 				.map(blog =>
-    				<Blog key={blog.id} blog={blog} addLikes={addLike} />
+    				<Blog key={blog.id} blog={blog} addLikes={addLike} removeBlog={delBlog} />
       		)}
     	</div>
 	)
