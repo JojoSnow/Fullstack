@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({blog, addLikes, removeBlog}) => {
   const [visible, setVisible] = useState(false)
@@ -18,15 +19,6 @@ const Blog = ({blog, addLikes, removeBlog}) => {
 	const toggleVisibility = () => {
 		setVisible(!visible)
 	}
-
-  // const btnRemoveVisibility = () => {
-  //   
-  //   if (blog.user.id === user.id) {
-  //     setBtnVisible('display: block')
-  //   } else {
-  //     setBtnVisible('display: none')
-  //   }
-  // }
 
   const addLike = () => {
 		const likes = blog.likes += 1
@@ -68,6 +60,12 @@ const Blog = ({blog, addLikes, removeBlog}) => {
     
   </div>  
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  addLikes: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired
 }
 
 export default Blog
