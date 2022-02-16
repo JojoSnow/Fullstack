@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-const Blog = ({blog, addLike}) => {
+const Blog = ({blog, addLikes}) => {
   const [visible, setVisible] = useState(false)
 
   const blogStyle = {
@@ -15,6 +15,19 @@ const Blog = ({blog, addLike}) => {
 
 	const toggleVisibility = () => {
 		setVisible(!visible)
+	}
+
+  const addLike = async () => {
+		const likes = blog.likes += 1
+		console.log(blog)
+		const id = blog.id
+		addLikes(id, {
+		  user: blog.user.id,
+		  likes: likes,
+		  author: blog.author,
+		  title: blog.title,
+		  url: blog.url
+    })
 	}
 
   return (

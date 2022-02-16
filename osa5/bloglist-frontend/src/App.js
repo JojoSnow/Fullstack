@@ -33,7 +33,7 @@ const App = () => {
     	try {
     		const newUser = await loginService.login({username, password})
 
-			window.localStorage.setItem(
+			localStorage.setItem(
 				'loggedBlogUser', JSON.stringify(newUser)
 			)
 
@@ -61,19 +61,11 @@ const App = () => {
 			})
 	}
 
-	const addLike = async (blog) => {
-		const likes = blog.likes++
-		const changedBlog = {
-		  user: blog.user.id,
-		  likes: likes,
-		  author: blog.author,
-		  title: blog.title,
-		  url: blog.url
-		}
+	const addLike = async (id, blogObject) => {
 	
 		await blogService
-			.update(blog.id, changedBlog)
-			.then(setBlogs(blogs))
+			.update(id, blogObject)
+			.catch(error => console.log(error))
 	}
 
   	const loginForm = () => (
@@ -104,7 +96,7 @@ const App = () => {
     		{blogs
 				.sort((a, b) => a.likes + b.likes)
 				.map(blog =>
-    			<Blog key={blog.id} blog={blog} addLike={addLike} />
+    				<Blog key={blog.id} blog={blog} addLikes={addLike} />
       		)}
     	</div>
 	)
