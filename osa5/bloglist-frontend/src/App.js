@@ -1,14 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
-import loginService from './services/login'
+
 
 const App = () => {
 	const [blogs, setBlogs] = useState([])
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
 	const [user, setUser] = useState(null)
 	const blogFormRef = useRef()
 
@@ -27,26 +26,11 @@ const App = () => {
 		}
 	}, [])
 
-	const handleLogin = async (event) => {
-		event.preventDefault()
-
-		try {
-			const newUser = await loginService.login({username, password})
-
-			localStorage.setItem(
-				'loggedBlogUser', JSON.stringify(newUser)
-			)
-
-			blogService.setToken(newUser.token)
-			setUser(newUser)
-			setUsername('')
-			setPassword('')
-		} catch (exception) {
-			console.log('wrong credentials')
-		}
+	const handleLogin = (newUser) => {
+		setUser(newUser)
 	}
 
-	const handleLogout = async () => {
+	const handleLogout = () => {
 		localStorage.removeItem('loggedBlogUser')
 
 		setUser(null)
@@ -73,20 +57,6 @@ const App = () => {
 			.catch(error => console.log(error))
 	}
 
-	const loginForm = () => (
-		<form onSubmit={handleLogin}>
-			<div>
-				username
-				<input type="text" value={username} name="Username"	onChange={({target}) => setUsername(target.value)} />
-			</div>
-			<div>
-				password
-				<input type="password" value={password} name="Password"	onChange={({target}) => setPassword(target.value)} />
-			</div>
-			<button type="submit">Login</button>
-		</form>
-	)
-
 	const blogForm = () => (
 		<Togglable buttonLabel="Create New Blog" ref={blogFormRef}>
 			<BlogForm createBlog={addBlog} />
@@ -106,10 +76,7 @@ const App = () => {
 	return (
 		<div>
 			{user === null ?
-				<div>
-					<h2>log in to application</h2>
-					{loginForm()}
-				</div> :
+				<LoginForm login={handleLogin} /> :
 				<div>
 					<h2>blogs</h2>
 					<p>{user.name} logged in <button onClick={handleLogout}>Logout</button></p>

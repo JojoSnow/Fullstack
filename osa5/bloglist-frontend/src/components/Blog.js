@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const Blog = ({blog, addLikes, removeBlog}) => {
 	const [visible, setVisible] = useState(false)
 	const loggedUser = localStorage.getItem('loggedBlogUser')
-	const user = JSON.parse(loggedUser)
+	const user = JSON.parse(JSON.stringify(loggedUser))
 
 	const blogStyle = {
 		padding: 5,
@@ -46,7 +46,7 @@ const Blog = ({blog, addLikes, removeBlog}) => {
 				<button onClick={toggleVisibility}>View</button>
 			</div>
 			<div style={showWhenVisible}>
-				<p>{blog.title} {blog.author} </p>
+				<p>{blog.title} by {blog.author} </p>
 				<button onClick={toggleVisibility}>Hide</button>
 				<p>{blog.url}</p>
 				<p>likes {blog.likes}</p>
