@@ -45,7 +45,7 @@ const Blog = ({blog, addLikes, removeBlog}) => {
 				<p>{blog.title} {blog.author}</p>
 				<button onClick={toggleVisibility}>View</button>
 			</div>
-			<div style={showWhenVisible}>
+			<div style={showWhenVisible} className="togglableContent">
 				<p>{blog.title} by {blog.author} </p>
 				<button onClick={toggleVisibility}>Hide</button>
 				<p>{blog.url}</p>
@@ -61,9 +61,7 @@ const Blog = ({blog, addLikes, removeBlog}) => {
 }
 
 Blog.propTypes = {
-	blog: PropTypes.object.isRequired,
-	addLikes: PropTypes.func.isRequired,
-	removeBlog: PropTypes.func.isRequired
+	blog: PropTypes.object.isRequired
 }
 
 export default Blog
