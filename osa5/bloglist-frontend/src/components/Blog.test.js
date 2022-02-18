@@ -17,12 +17,13 @@ describe('<Blog />', () => {
 		user: user
 	}
 	let container
+	const mockHandler = jest.fn()
 
 	beforeEach(() => {
 		localStorage.setItem('loggedBlogUser', user)
 
 		container = render(
-			<Blog blog={blog}>
+			<Blog blog={blog} addLikes={mockHandler}>
 				<div>
 					content
 				</div>
@@ -41,6 +42,14 @@ describe('<Blog />', () => {
 
 		const div = container.querySelector('.togglableContent')
 		expect(div).not.toHaveStyle('display: none')
+	})
+
+	test('button press uses props.addLikes() twice', () => {
+		const button = screen.getByText('Like')
+		userEvent.click(button)
+		userEvent.click(button)
+
+		expect(mockHandler.mock.calls).toHaveLength(2)
 	})
 })
 
