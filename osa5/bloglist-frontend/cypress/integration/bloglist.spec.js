@@ -35,9 +35,7 @@ describe('Blog app', function() {
 	describe('When logged in', function() {
 		beforeEach(function() {
 			cy.login({username: 'snowy', password: 'pvris'})
-		})
 
-		it('A blog can be created', function() {
 			cy.contains('Create New Blog').click()
 
 			cy.get('#title').type('Created by Cypress')
@@ -45,25 +43,27 @@ describe('Blog app', function() {
 			cy.get('#url').type('lost in space')
 
 			cy.get('#createBtns').click()
+		})
 
+		it('A blog can be created', function() {
 			cy.get('html').should('contain', 'Created by Cypress The Dev')
 		})
 
 		it('A blog can be liked', function() {
-			cy.contains('Create New Blog').click()
-
-			cy.get('#title').type('Created by Cypress')
-			cy.get('#author').type('The Dev')
-			cy.get('#url').type('lost in space')
-
-			cy.get('#createBtns').click()
-
 			cy.contains('View').click()
 			cy.contains('Like').click()
 
 			cy.reload()
 			cy.contains('View').click()
 			cy.get('html').should('contain', 'likes 1')
+		})
+
+		it('A blog can be removed by the user who created the blog', function() {
+			cy.contains('View').click()
+			cy.contains('Remove').click()
+
+			cy.reload()
+			cy.get('html').should('not.contain', 'Created by Cypress The Dev')
 		})
 	})
 })
