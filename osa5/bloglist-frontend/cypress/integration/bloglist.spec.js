@@ -6,7 +6,13 @@ describe('Blog app', function() {
 			username: 'snowy',
 			password: 'pvris'
 		}
+		const user1 = {
+			name: 'Matti Luukkainen',
+			username: 'mluukkai',
+			password: 'salainen'
+		}
 		cy.request('POST', 'http://localhost:3003/api/users', user)
+		cy.request('POST', 'http://localhost:3003/api/users', user1)
 		cy.visit('http://localhost:3003')
 	})
 
@@ -36,20 +42,14 @@ describe('Blog app', function() {
 		beforeEach(function() {
 			cy.login({username: 'snowy', password: 'pvris'})
 
-			cy.contains('Create New Blog').click()
-
-			cy.get('#title').type('Created by Cypress')
-			cy.get('#author').type('The Dev')
-			cy.get('#url').type('lost in space')
-
-			cy.get('#createBtns').click()
+			cy.createBlog({author: 'The Dev', title: 'Created by Cypress', url: 'lost in space'})
 		})
 
-		it('A blog can be created', function() {
+		it('blog can be created', function() {
 			cy.get('html').should('contain', 'Created by Cypress The Dev')
 		})
 
-		it('A blog can be liked', function() {
+		it('blog can be liked', function() {
 			cy.contains('View').click()
 			cy.contains('Like').click()
 
@@ -58,12 +58,20 @@ describe('Blog app', function() {
 			cy.get('html').should('contain', 'likes 1')
 		})
 
-		it('A blog can be removed by the user who created the blog', function() {
+		it('blog can be removed by the user who created the blog', function() {
 			cy.contains('View').click()
 			cy.contains('Remove').click()
 
 			cy.reload()
 			cy.get('html').should('not.contain', 'Created by Cypress The Dev')
+		})
+
+		it('blog cannot be removed by an user who did not create it', function () {
+			cy.get('#logoutBtn').click()
+			cy.login({username: 'mluukkai', password: 'salainen'})
+
+			cy.contains('View').click()
+			cy.get('html').should('not.contain', 'Remove')
 		})
 	})
 })
