@@ -76,18 +76,17 @@ const App = () => {
 		const changedNote = {...note, important: !note.important}
 
 		noteService
-			.update(changedNote)
+			.update(changedNote.id, changedNote)
 			.then(returnedNote => {
 				setNotes(notes.map(n => n.id !== id ? n : returnedNote))
 			})
 			.catch(() => {
 				setErrorMessage(
-					`Note '${note.content}' was already removed from server`
+					'Notes importance was changed'
 				)
 				setTimeout(() => {
 					setErrorMessage(null)
 				}, 5000)
-				setNotes(notes.filter(n => n.id !== id))
 			})
 	}
 
@@ -97,7 +96,7 @@ const App = () => {
 		try {
 			const newUser = await loginService.login({username, password})
 
-			window.localStorage.setItem(
+			localStorage.setItem(
 				'loggedNoteappUser', JSON.stringify(newUser)
 			)
 
