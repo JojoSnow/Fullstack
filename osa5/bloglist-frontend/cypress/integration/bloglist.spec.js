@@ -73,5 +73,19 @@ describe('Blog app', function() {
 			cy.contains('View').click()
 			cy.get('html').should('not.contain', 'Remove')
 		})
+
+		it('blogs are sorted by likes with highest like on the top', function () {
+			cy.createBlog({author: 'The Tester', title: 'Testing with Cypress', url: 'who knows'})
+
+			cy.contains('Created by Cypress The Dev').parent().find('button').click()
+			cy.contains('Like').click()
+
+			cy.reload()
+
+			cy.contains('Created by Cypress The Dev').parent().find('button').click()
+			cy.contains('likes 1')
+			cy.contains('Testing with Cypress The Tester').parent().find('button').click()
+			cy.contains('likes 0')
+		})
 	})
 })
