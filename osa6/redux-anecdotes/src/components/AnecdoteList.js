@@ -11,6 +11,7 @@ const AnecdoteList = () => {
 		dispatch(addVote(id))
 		dispatch(voteNotification(content))
 	}
+	
 	if (filtered.length === 0) {
 		return (
 			<div>
