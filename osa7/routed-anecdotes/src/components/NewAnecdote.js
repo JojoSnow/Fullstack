@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 
 const NewAnecdote = ({create}) => {
 	const [content, setContent] = useState('')
 	const [author, setAuthor] = useState('')
 	const [info, setInfo] = useState ('')
+	let navigate = useNavigate()
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
@@ -17,6 +19,7 @@ const NewAnecdote = ({create}) => {
 		setContent('')
 		setAuthor('')
 		setInfo('')
+		navigate('/')
 	}
 
 	return (
