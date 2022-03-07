@@ -25,12 +25,10 @@ export const setNotification = (content, time) => {
 	return async dispatch => {
 		dispatch(makeNotification(content))
 		if (timeoutID) {
-			console.log('first', timeoutID)
 			clearTimeout(timeoutID)
 		}
 		timeoutID = setTimeout(() => {
 			dispatch(clearNotification())
-			console.log('second', timeoutID)
 		}, time * 1000)
 	}
 }
