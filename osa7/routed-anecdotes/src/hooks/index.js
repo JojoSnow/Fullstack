@@ -11,7 +11,3 @@ export const useField = (type) => {
 		type, value, onChange
 	}
 }
-
-// export const useAnotherHook = () => {
-	// moduulissa voi olla monta nimettyä eksporttia
-// }

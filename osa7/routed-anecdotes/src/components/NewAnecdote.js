@@ -23,7 +23,7 @@ const NewAnecdote = ({create}) => {
 	return (
 		<div>
 			<h2>Create a new anecdote</h2>
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit} >
 				<label htmlFor="content">Content</label>
 				<input name="content" {...content} /><br />
 
@@ -33,7 +33,8 @@ const NewAnecdote = ({create}) => {
 				<label htmlFor="info">Url for more info</label>
 				<input name="info" {...info} /><br />
 
-				<button type="submit">Create</button>
+				<input type="submit" value="Submit" />
+				<input type="reset" value="Reset" />
 			</form>		
 		</div>
 	)
