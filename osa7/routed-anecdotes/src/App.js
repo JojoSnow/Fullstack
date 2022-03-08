@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import {Routes, Route, useMatch} from 'react-router-dom'
-import {useField} from './hooks'
 
 import Footer from './components/Footer'
 import Anecdotes from './components/Anecdotes'
@@ -27,7 +26,6 @@ const App = () => {
 		}
 	])
 	const [notification, setNotification] = useState('')
-	const username = useField('text')
 
 	const addAnecdote = (anec) => {
 		anec.id = Math.round(Math.random() * 100000)
