@@ -1,13 +1,11 @@
 import React, {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {useField} from './hooks'
 
 const NewAnecdote = ({create}) => {
 	const [content, setContent] = useState('')
 	const [author, setAuthor] = useState('')
 	const [info, setInfo] = useState ('')
 	let navigate = useNavigate()
-	const username = useField('text')
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
