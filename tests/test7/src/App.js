@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {Routes, Route, Link, Navigate, useMatch} from 'react-router-dom'
-import {Alert, Navbar, Nav} from 'react-bootstrap'
+import {Container, AppBar, Toolbar, IconButton, Button} from '@material-ui/core'
+import {Alert} from '@material-ui/lab'
 
 import Note from './components/Note'
 import Notes from './components/Notes'
@@ -51,33 +52,32 @@ const App = () => {
 		: null
 
 	return (
-		<div className="container">
+		<Container>
 			{(message &&
-				<Alert variant="success">
+				<Alert severity="success">
 					{message}	
 				</Alert>)}
-				<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-					<Navbar.Toggle aria-controls="responsive-navbar-nav" />
-					<Navbar.Collapse id="responsive-navbar-nav">
-						<Nav className="mr-auto">
-						<Nav.Link href="#" as="span">
-							<Link style={padding} to="/">Home</Link>
-						</Nav.Link>
-						<Nav.Link href="#" as="span">
-							<Link style={padding} to="/notes">Notes</Link>
-						</Nav.Link>
-						<Nav.Link href="#" as="span">
-							<Link style={padding} to="/users">Users</Link>
-						</Nav.Link>
-						<Nav.Link href="#" as="span">
-							{user
-							? <em>{user} logged in</em>
-							: <Link to="/login">Login</Link>
-							}
-						</Nav.Link>
-						</Nav>
-					</Navbar.Collapse>
-					</Navbar>
+				<AppBar position="static">
+					<Toolbar>
+						<IconButton edge="start" color="inherit" aria-label="menu">
+						</IconButton>
+						<Button color="inherit" component={Link} to="/">
+							Home
+						</Button>
+						<Button color="inherit"  component={Link} to="/notes">
+							Notes
+						</Button>
+						<Button color="inherit" component={Link} to="/users">
+							Users
+						</Button>  
+						{user
+							? 	<em>{user} logged in</em>
+							: 	<Button color="inherit" component={Link} to="/login">
+									Login
+								</Button>
+						}              
+					</Toolbar>
+				</AppBar>
 
 			<Routes>
 				<Route path="/notes/:id" element={<Note note={note} />} />
@@ -88,7 +88,7 @@ const App = () => {
 			</Routes>
 
 			<Footer />
-		</div>
+		</Container>
 	)
 }
 
