@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import {Routes, Route, Link, Navigate, useMatch} from 'react-router-dom'
-import {Container, AppBar, Toolbar, IconButton, Button} from '@material-ui/core'
-import {Alert} from '@material-ui/lab'
+import styled from 'styled-components'
 
 import Note from './components/Note'
 import Notes from './components/Notes'
@@ -9,6 +8,16 @@ import Home from './components/Home'
 import Users from './components/Users'
 import Login from './components/Login'
 import Footer from './components/Footer'
+
+const Page = styled.div`
+  padding: 1em;
+  background: papayawhip;
+`
+
+const Navigation = styled.div`
+  background: BurlyWood;
+  padding: 1em;
+`
 
 const App = () => {
 	const [notes, setNotes] = useState([
@@ -52,43 +61,27 @@ const App = () => {
 		: null
 
 	return (
-		<Container>
-			{(message &&
-				<Alert severity="success">
-					{message}	
-				</Alert>)}
-				<AppBar position="static">
-					<Toolbar>
-						<IconButton edge="start" color="inherit" aria-label="menu">
-						</IconButton>
-						<Button color="inherit" component={Link} to="/">
-							Home
-						</Button>
-						<Button color="inherit"  component={Link} to="/notes">
-							Notes
-						</Button>
-						<Button color="inherit" component={Link} to="/users">
-							Users
-						</Button>  
-						{user
-							? 	<em>{user} logged in</em>
-							: 	<Button color="inherit" component={Link} to="/login">
-									Login
-								</Button>
-						}              
-					</Toolbar>
-				</AppBar>
+		<Page>
+			<Navigation>
+				<Link style={padding} to="/">Home</Link>
+				<Link style={padding} to="/notes">Notes</Link>
+				<Link style={padding} to="/users">Users</Link>
+				{user
+				? <em>{user} logged in</em>
+				: <Link style={padding} to="/login">Login</Link>
+				}
+			</Navigation>
 
 			<Routes>
 				<Route path="/notes/:id" element={<Note note={note} />} />
-				<Route path="/notes" element={<Notes notes={notes} />} />
-				<Route path="/users" element={user ? <Users /> : <Navigate replace to ="/login" />} />
+				<Route path="/notes" element={<Notes notes={notes} />} />   
+				<Route path="/users" element={user ? <Users /> : <Navigate replace to="/login" />} />
 				<Route path="/login" element={<Login onLogin={login} />} />
-				<Route path="/" element={<Home />} />
-			</Routes>
+				<Route path="/" element={<Home />} />     
+				</Routes>
 
 			<Footer />
-		</Container>
+		</Page>
 	)
 }
 
