@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import {Routes, Route, Link, Navigate, useMatch} from 'react-router-dom'
+import {Alert, Navbar, Nav} from 'react-bootstrap'
+
 import Note from './components/Note'
 import Notes from './components/Notes'
 import Home from './components/Home'
@@ -29,9 +31,14 @@ const App = () => {
 		}
 	])
 	const [user, setUser] = useState(null)
+	const [message, setMessage] = useState(null)
 
 	const login = (u) => {
 		setUser(u)
+		setMessage(`welcome ${u}`)
+		setTimeout(() => {
+			setMessage(null)
+		}, 10000)
 	}
 
 	const padding = {
@@ -44,16 +51,33 @@ const App = () => {
 		: null
 
 	return (
-		<div>
-			<div>
-				<Link style={padding} to="">Home</Link>
-				<Link style={padding} to="/notes">Notes</Link>
-				<Link style={padding} to="/users">Users</Link>
-				{user
-					? <em>{user} logged in</em>
-					: <Link style={padding} to="/login">Login</Link>
-				}	
-			</div>
+		<div className="container">
+			{(message &&
+				<Alert variant="success">
+					{message}	
+				</Alert>)}
+				<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+					<Navbar.Toggle aria-controls="responsive-navbar-nav" />
+					<Navbar.Collapse id="responsive-navbar-nav">
+						<Nav className="mr-auto">
+						<Nav.Link href="#" as="span">
+							<Link style={padding} to="/">Home</Link>
+						</Nav.Link>
+						<Nav.Link href="#" as="span">
+							<Link style={padding} to="/notes">Notes</Link>
+						</Nav.Link>
+						<Nav.Link href="#" as="span">
+							<Link style={padding} to="/users">Users</Link>
+						</Nav.Link>
+						<Nav.Link href="#" as="span">
+							{user
+							? <em>{user} logged in</em>
+							: <Link to="/login">Login</Link>
+							}
+						</Nav.Link>
+						</Nav>
+					</Navbar.Collapse>
+					</Navbar>
 
 			<Routes>
 				<Route path="/notes/:id" element={<Note note={note} />} />
