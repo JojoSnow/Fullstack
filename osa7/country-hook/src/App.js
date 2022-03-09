@@ -19,9 +19,15 @@ const useCountry = (name) => {
 	useEffect(() => {
 		axios
 			.get(`https://restcountries.com/v3.1/name/${name}?fullText=true`)
+			.catch(error => {
+				console.log(error)
+				setCountry(null)
+			})
 			.then(response => {
-				setCountry(response.data[0])
-		})
+				if (response) {
+					setCountry(response.data[0])
+				}
+			})
 	}, [name])
 
 	if (country) {
