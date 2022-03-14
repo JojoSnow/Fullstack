@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useEffect, useRef} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
@@ -7,8 +7,12 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 
 import {initializeBlogs, createBlog, deleteBlog} from './reducers/blogReducer'
+import {logoutUser} from './reducers/loginReducer'
 
 const App = () => {
+	const blogs = useSelector(state => state.blogs)
+	const user = useSelector(state => state.loggedUser)
+	const blogFormRef = useRef()
 
 	const dispatch = useDispatch()
 	
@@ -16,27 +20,14 @@ const App = () => {
 		dispatch(initializeBlogs())
 	}, [dispatch])
 
-	const blogs = useSelector(state => state.blogs)
-	const [user, setUser] = useState(null)
-	const blogFormRef = useRef()
-
-
 	useEffect(() => {
-		const loggedUserJSON = localStorage.getItem('loggedBlogUser')
-		if (loggedUserJSON) {
-			const loggedUser = JSON.parse(loggedUserJSON)
-			setUser(loggedUser)
-			blogService.setToken(loggedUser.token)
+		if (user) {
+			blogService.setToken(user.token)
 		}
 	}, [])
 
-	const handleLogin = newUser => {
-		setUser(newUser)
-	}
-
 	const handleLogout = () => {
-		localStorage.removeItem('loggedBlogUser')
-		setUser(null)
+		dispatch(logoutUser())
 	}
 
 	const addBlog = async blogObject => {
@@ -71,7 +62,7 @@ const App = () => {
 	return (
 		<div>
 			{user === null ? (
-				<LoginForm login={handleLogin} />
+				<LoginForm />
 			) : (
 				<div>
 					<h2>blogs</h2>

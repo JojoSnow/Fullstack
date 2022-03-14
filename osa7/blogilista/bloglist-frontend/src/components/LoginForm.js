@@ -1,26 +1,15 @@
 import React, {useState} from 'react'
-import loginService from '../services/login'
-import blogService from '../services/blogs'
+import {useDispatch} from 'react-redux'
+import {loginUser} from '../reducers/loginReducer'
 
-const LoginForm = ({login}) => {
+const LoginForm = () => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
+	const dispatch = useDispatch()
 
 	const handleLogin = async event => {
 		event.preventDefault()
-
-		try {
-			const newUser = await loginService.login({username, password})
-
-			localStorage.setItem('loggedBlogUser', JSON.stringify(newUser))
-
-			blogService.setToken(newUser.token)
-			login(newUser)
-			setUsername('')
-			setPassword('')
-		} catch (exception) {
-			console.log('wrong credentials')
-		}
+		dispatch(loginUser(username, password))
 	}
 
 	return (

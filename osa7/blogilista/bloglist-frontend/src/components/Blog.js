@@ -1,14 +1,11 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {likeBlog} from '../reducers/blogReducer'
 
 const Blog = ({blog, addLikes, removeBlog}) => {
 	const [visible, setVisible] = useState(false)
-	const loggedUser = localStorage.getItem('loggedBlogUser')
-	const JSONuser = JSON.stringify(loggedUser)
-	const user = JSON.parse(JSONuser)
-	const finalUser = JSON.parse(user)
+	const finalUser = useSelector(state => state.loggedUser)
 	const dispatch = useDispatch()
 
 	const blogStyle = {
