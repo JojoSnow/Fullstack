@@ -29,12 +29,22 @@ export const createBlog = content => {
 	return async dispatch => {
 		const newBlog = await blogService.create(content)
 		dispatch(appendBlog(newBlog))
+		const blogs = await blogService.getAll()
+		dispatch(setBlogs(blogs))
 	}
 }
 
 export const likeBlog = (object) => {
 	return async dispatch => {
 		await blogService.like(object)
+		const blogs = await blogService.getAll()
+		dispatch(setBlogs(blogs))
+	}
+}
+
+export const deleteBlog = (id) => {
+	return async dispatch => {
+		await blogService.del(id)
 		const blogs = await blogService.getAll()
 		dispatch(setBlogs(blogs))
 	}

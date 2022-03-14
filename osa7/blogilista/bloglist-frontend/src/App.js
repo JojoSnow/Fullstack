@@ -6,7 +6,7 @@ import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 
-import {initializeBlogs, createBlog} from './reducers/blogReducer'
+import {initializeBlogs, createBlog, deleteBlog} from './reducers/blogReducer'
 
 const App = () => {
 
@@ -45,7 +45,7 @@ const App = () => {
 	}
 
 	const delBlog = async id => {
-		await blogService.del(id).catch(error => console.log(error))
+		dispatch(deleteBlog(id))
 	}	
 
 	const blogForm = () => (
