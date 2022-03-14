@@ -1,18 +1,25 @@
 import React, {useState, useEffect, useRef} from 'react'
+import {useSelector, useDispatch} from 'react-redux'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 
+import {initializeBlogs, createBlog} from './reducers/blogReducer'
+
 const App = () => {
-	const [blogs, setBlogs] = useState([])
+
+	const dispatch = useDispatch()
+	
+	useEffect(() => {
+		dispatch(initializeBlogs())
+	}, [dispatch])
+
+	const blogs = useSelector(state => state.blogs)
 	const [user, setUser] = useState(null)
 	const blogFormRef = useRef()
 
-	useEffect(() => {
-		blogService.getAll().then(bs => setBlogs(bs))
-	}, [])
 
 	useEffect(() => {
 		const loggedUserJSON = localStorage.getItem('loggedBlogUser')
@@ -34,9 +41,7 @@ const App = () => {
 
 	const addBlog = async blogObject => {
 		blogFormRef.current.toggleVisibility()
-		await blogService.create(blogObject).then(returnedBlog => {
-			setBlogs(blogs.concat(returnedBlog))
-		})
+		dispatch(createBlog(blogObject))
 	}
 
 	const delBlog = async id => {
@@ -58,7 +63,7 @@ const App = () => {
 	const blogsDiv = () => (
 		<div>
 			{blogs
-				.sort((a, b) => a.likes + b.likes)
+				// .sort((a, b) => a.likes + b.likes)
 				.map(blog => (
 					<Blog
 						key={blog.id}
