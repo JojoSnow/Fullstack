@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
+import {useDispatch} from 'react-redux'
+import {likeBlog} from '../reducers/blogReducer'
 
 const Blog = ({blog, addLikes, removeBlog}) => {
 	const [visible, setVisible] = useState(false)
@@ -7,6 +9,7 @@ const Blog = ({blog, addLikes, removeBlog}) => {
 	const JSONuser = JSON.stringify(loggedUser)
 	const user = JSON.parse(JSONuser)
 	const finalUser = JSON.parse(user)
+	const dispatch = useDispatch()
 
 	const blogStyle = {
 		padding: 5,
@@ -22,16 +25,8 @@ const Blog = ({blog, addLikes, removeBlog}) => {
 		setVisible(!visible)
 	}
 
-	const addLike = () => {
-		const likes = (blog.likes += 1)
-		const id = blog.id
-		addLikes(id, {
-			user: blog.user.id,
-			likes: likes,
-			author: blog.author,
-			title: blog.title,
-			url: blog.url,
-		})
+	const addLike = async () => {
+		dispatch(likeBlog(blog))
 	}
 
 	const delBlog = () => {

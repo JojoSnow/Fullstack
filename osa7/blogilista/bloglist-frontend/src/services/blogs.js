@@ -36,4 +36,17 @@ const del = async id => {
 	return response.data
 }
 
-export default {getAll, create, update, del, setToken}
+const like = async (blog) => {
+	const likes = blog.likes + 1
+	const newObject = {
+		title: blog.title,
+		author: blog.author,
+		url: blog.url,
+		likes: likes,
+		id: blog.id
+	}
+	const request = await axios.put(`${baseUrl}/${blog.id}`, newObject)
+	return request.data
+}
+
+export default {getAll, create, update, del, setToken, like}

@@ -46,13 +46,7 @@ const App = () => {
 
 	const delBlog = async id => {
 		await blogService.del(id).catch(error => console.log(error))
-	}
-
-	const addLike = async (id, blogObject) => {
-		await blogService
-			.update(id, blogObject)
-			.catch(error => console.log(error))
-	}
+	}	
 
 	const blogForm = () => (
 		<Togglable buttonLabel="Create New Blog" ref={blogFormRef}>
@@ -68,7 +62,6 @@ const App = () => {
 					<Blog
 						key={blog.id}
 						blog={blog}
-						addLikes={addLike}
 						removeBlog={delBlog}
 					/>
 				))}

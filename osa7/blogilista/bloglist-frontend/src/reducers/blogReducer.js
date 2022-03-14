@@ -32,4 +32,12 @@ export const createBlog = content => {
 	}
 }
 
+export const likeBlog = (object) => {
+	return async dispatch => {
+		await blogService.like(object)
+		const blogs = await blogService.getAll()
+		dispatch(setBlogs(blogs))
+	}
+}
+
 export default blogSlice.reducer
