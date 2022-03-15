@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {Routes, Route} from 'react-router-dom'
+import {Routes, Route, Link} from 'react-router-dom'
 
 import Blogs from './components/Blogs'
 import Blog from './components/Blog'
@@ -63,8 +63,13 @@ const App = () => {
 		</div>
 	)
 
-	const btnStyle = {
-		marginTop: 15
+	const padding = {
+		padding: 5
+	}
+
+	const navStyle = {
+		backgroundColor: 'lightgrey',
+		padding: 5
 	}
 
 	return (
@@ -74,13 +79,18 @@ const App = () => {
 				<LoginForm />
 			) : (
 				<div>
-					
-					<h2>blogs</h2>
-					<p>
-						{loggedUser.name} logged in{' '} <br />
-						<button id="logoutBtn" onClick={handleLogout}style={btnStyle}>
+					<div style={navStyle}>
+						<Link style={padding} to="/blogs">Blogs</Link>
+						<Link style={padding} to="/users">Users</Link>
+						{loggedUser.name} logged in{' '}
+						<button id="logoutBtn" onClick={handleLogout}>
 							Logout
 						</button>
+					</div>
+
+					<h2>Blog App</h2>
+					<p>
+						
 					</p>
 					<Routes>
 						<Route path='/users' element ={<Users users={users} />} />
