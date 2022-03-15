@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 const Blogs = ({blog}) => {
 	const blogStyle = {
 		border: 'solid',
+		borderWidth: '1px',
 		padding: '5px',
 		marginBottom: '5px' 
 	}
