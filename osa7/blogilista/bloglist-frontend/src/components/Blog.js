@@ -1,8 +1,10 @@
+import {useState} from 'react'
 import {useParams, useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import {likeBlog, deleteBlog} from '../reducers/blogReducer'
+import {likeBlog, deleteBlog, makeComment} from '../reducers/blogReducer'
 
 const Blog = ({blogs}) => {
+	const [comment, setComment] = useState('')
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 
@@ -21,6 +23,12 @@ const Blog = ({blogs}) => {
 			navigate('/')
 		}
 	}
+
+	const addComment = (event) => {
+		event.preventDefault()
+		dispatch(makeComment(blog, comment))
+		setComment('')
+	}
 	
 	return (
 		<div>
@@ -34,6 +42,20 @@ const Blog = ({blogs}) => {
 				) : (
 					''
 			)}
+
+			<h3>Comments</h3>
+			<form onSubmit={addComment}>
+				<input onChange={({target}) => setComment(target.value)} value={comment} />
+				<button type="submit" >Add Comment</button>
+			</form>
+			
+			<ul key={blog.comments.id}>
+				{blog.comments.map(com => 
+					<li>{com}</li>
+				)}
+			</ul>
+
+			
 		</div>
 	)
 	

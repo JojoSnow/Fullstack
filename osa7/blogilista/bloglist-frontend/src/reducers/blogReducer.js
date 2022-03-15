@@ -50,4 +50,14 @@ export const deleteBlog = (id) => {
 	}
 }
 
+export const makeComment = (object, comment) => {
+	return async dispatch => {
+		await blogService.createComment(object)
+		const newBlog = await blogService.createComment(object, comment)
+		dispatch(appendBlog(newBlog))
+		const blogs = await blogService.getAll()
+		dispatch(setBlogs(blogs))
+	}
+}
+
 export default blogSlice.reducer
