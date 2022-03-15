@@ -1,26 +1,12 @@
-import React, {useState} from 'react'
-import PropTypes from 'prop-types'
+import {useParams} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import {likeBlog} from '../reducers/blogReducer'
+import {likeBlog, deleteBlog} from '../reducers/blogReducer'
 
-const Blog = ({blog, addLikes, removeBlog}) => {
-	const [visible, setVisible] = useState(false)
-	const finalUser = useSelector(state => state.loggedUser)
+const Blog = ({blogs}) => {
 	const dispatch = useDispatch()
-
-	const blogStyle = {
-		padding: 5,
-		border: 'solid',
-		borderWidth: 1,
-		marginBottom: 5,
-	}
-
-	const hideWhenVisible = {display: visible ? 'none' : ''}
-	const showWhenVisible = {display: visible ? '' : 'none'}
-
-	const toggleVisibility = () => {
-		setVisible(!visible)
-	}
+	const id = useParams().id
+	const blog = blogs.find(b => b.id === id)
+	const loggedUser = useSelector(state => state.loggedUser)
 
 	const addLike = async () => {
 		dispatch(likeBlog(blog))
@@ -29,39 +15,25 @@ const Blog = ({blog, addLikes, removeBlog}) => {
 	const delBlog = () => {
 		const message = `Remove blog ${blog.title} by ${blog.author}?`
 		if (window.confirm(message)) {
-			removeBlog(blog.id)
+			dispatch(deleteBlog(blog.id))
 		}
 	}
-
+	
 	return (
-		<div style={blogStyle} id={blog.id}>
-			<div style={hideWhenVisible}>
-				<p>
-					{blog.title} {blog.author}
-				</p>
-				<button onClick={toggleVisibility}>View</button>
-			</div>
-			<div style={showWhenVisible} className="togglableContent">
-				<p>
-					{blog.title} by {blog.author}{' '}
-				</p>
-				<button onClick={toggleVisibility}>Hide</button>
-				<p>{blog.url}</p>
-				<p>likes {blog.likes}</p>
-				<button onClick={addLike}>Like</button>
-				<p>{blog.user.name}</p>
-				{finalUser.username === blog.user.username ? (
+		<div>
+			<h2>{blog.title}</h2>
+			<p>{blog.url}</p>
+			<p>{blog.likes} likes</p> 
+			<button onClick={addLike}>Like</button>
+			<p>Added by {blog.user.name}</p>
+			{loggedUser.username === blog.user.username ? (
 					<button onClick={delBlog}>Remove</button>
 				) : (
 					''
-				)}
-			</div>
+			)}
 		</div>
 	)
-}
-
-Blog.propTypes = {
-	blog: PropTypes.object.isRequired,
+	
 }
 
 export default Blog

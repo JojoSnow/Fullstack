@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Routes, Route} from 'react-router-dom'
 
+import Blogs from './components/Blogs'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
@@ -10,7 +11,7 @@ import Users from './components/Users'
 import User from './components/User'
 import blogService from './services/blogs'
 
-import {initializeBlogs, createBlog, deleteBlog} from './reducers/blogReducer'
+import {initializeBlogs, createBlog} from './reducers/blogReducer'
 import {logoutUser} from './reducers/loginReducer'
 import {initializeUsers} from './reducers/userReducer'
 
@@ -42,10 +43,6 @@ const App = () => {
 		dispatch(createBlog(blogObject))
 	}
 
-	const delBlog = async id => {
-		dispatch(deleteBlog(id))
-	}	
-
 	const blogForm = () => (
 		<Togglable buttonLabel="Create New Blog" ref={blogFormRef}>
 			<BlogForm createBlog={addBlog} />
@@ -58,10 +55,9 @@ const App = () => {
 			{blogs
 				// .sort((a, b) => a.likes + b.likes)
 				.map(blog => (
-					<Blog
+					<Blogs
 						key={blog.id}
 						blog={blog}
-						removeBlog={delBlog}
 					/>
 				))}
 		</div>
@@ -89,6 +85,7 @@ const App = () => {
 					<Routes>
 						<Route path='/users' element ={<Users users={users} />} />
 						<Route path='/users/:id' element={<User users={users} />} />
+						<Route path='/blogs/:id' element={<Blog blogs={blogs} />} />
 						<Route path='/' element={blogsDiv()} />
 					</Routes>
 				</div>
