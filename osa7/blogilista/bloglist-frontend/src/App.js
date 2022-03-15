@@ -1,28 +1,35 @@
 import React, {useEffect, useRef} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
+import {Routes, Route} from 'react-router-dom'
+
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
+import Users from './components/Users'
+import User from './components/User'
 import blogService from './services/blogs'
 
 import {initializeBlogs, createBlog, deleteBlog} from './reducers/blogReducer'
 import {logoutUser} from './reducers/loginReducer'
+import {initializeUsers} from './reducers/userReducer'
 
 const App = () => {
 	const blogs = useSelector(state => state.blogs)
-	const user = useSelector(state => state.loggedUser)
+	const users = useSelector(state => state.users)
+	const loggedUser = useSelector(state => state.loggedUser)
 	const blogFormRef = useRef()
 
 	const dispatch = useDispatch()
 	
 	useEffect(() => {
 		dispatch(initializeBlogs())
+		dispatch(initializeUsers())
 	}, [dispatch])
 
 	useEffect(() => {
-		if (user) {
-			blogService.setToken(user.token)
+		if (loggedUser) {
+			blogService.setToken(loggedUser.token)
 		}
 	}, [])
 
@@ -47,6 +54,7 @@ const App = () => {
 
 	const blogsDiv = () => (
 		<div>
+			{blogForm()}
 			{blogs
 				// .sort((a, b) => a.likes + b.likes)
 				.map(blog => (
@@ -61,20 +69,24 @@ const App = () => {
 
 	return (
 		<div>
-			{user === null ? (
+			
+			{loggedUser === null ? (
 				<LoginForm />
 			) : (
 				<div>
+					
 					<h2>blogs</h2>
 					<p>
-						{user.name} logged in{' '}
+						{loggedUser.name} logged in{' '}
 						<button id="logoutBtn" onClick={handleLogout}>
 							Logout
 						</button>
 					</p>
-
-					{blogForm()}
-					{blogsDiv()}
+					<Routes>
+						<Route path='/users' element ={<Users users={users} />} />
+						<Route path='/users/:id' element={<User users={users} />} />
+						<Route path='/' element={blogsDiv()} />
+					</Routes>
 				</div>
 			)}
 		</div>
