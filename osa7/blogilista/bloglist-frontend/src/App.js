@@ -80,7 +80,7 @@ const App = () => {
 			) : (
 				<div>
 					<div style={navStyle}>
-						<Link style={padding} to="/blogs">Blogs</Link>
+						<Link style={padding} to="/">Blogs</Link>
 						<Link style={padding} to="/users">Users</Link>
 						{loggedUser.name} logged in{' '}
 						<button id="logoutBtn" onClick={handleLogout}>
