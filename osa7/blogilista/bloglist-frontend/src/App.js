@@ -67,6 +67,10 @@ const App = () => {
 		</div>
 	)
 
+	const btnStyle = {
+		marginTop: 15
+	}
+
 	return (
 		<div>
 			
@@ -77,8 +81,8 @@ const App = () => {
 					
 					<h2>blogs</h2>
 					<p>
-						{loggedUser.name} logged in{' '}
-						<button id="logoutBtn" onClick={handleLogout}>
+						{loggedUser.name} logged in{' '} <br />
+						<button id="logoutBtn" onClick={handleLogout}style={btnStyle}>
 							Logout
 						</button>
 					</p>

@@ -1,5 +1,4 @@
 import {Link} from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 
 const Users = ({users}) => {
 
@@ -14,8 +13,10 @@ const Users = ({users}) => {
 						<th>blogs created</th>
 					</tr>
 					{users.map(user =>
-						<tr>
-							<td>{user.name}</td>
+						<tr key={user.id}>
+							<td>
+								<Link to={`/users/${user.id}`}>{user.name}</Link>
+							</td>
 							<td>{user.blogs.length}</td>
 						</tr>
 					)}
