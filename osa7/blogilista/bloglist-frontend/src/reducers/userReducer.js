@@ -12,8 +12,8 @@ const userSlice = createSlice({
 		},
 		setUser(state, action) {
 			return action.payload
-		}
-	}
+		},
+	},
 })
 
 export const {setUsers, setUser} = userSlice.actions
@@ -25,7 +25,7 @@ export const initializeUsers = () => {
 	}
 }
 
-export const getUser = (id) => {
+export const getUser = id => {
 	return async dispatch => {
 		const user = await userService.getUser(id)
 		dispatch(setUser(user))

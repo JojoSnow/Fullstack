@@ -15,8 +15,8 @@ const userSlice = createSlice({
 		delUser(state, action) {
 			state = null
 			return state
-		}
-	}
+		},
+	},
 })
 
 export const {saveUser, delUser} = userSlice.actions

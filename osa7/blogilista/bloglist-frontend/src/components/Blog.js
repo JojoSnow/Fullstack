@@ -11,7 +11,7 @@ const Blog = ({blogs}) => {
 	const id = useParams().id
 	const blog = blogs.find(b => b.id === id)
 	const loggedUser = useSelector(state => state.loggedUser)
-	
+
 	const addLike = async () => {
 		dispatch(likeBlog(blog))
 	}
@@ -24,41 +24,41 @@ const Blog = ({blogs}) => {
 		}
 	}
 
-	const addComment = (event) => {
+	const addComment = event => {
 		event.preventDefault()
 		dispatch(makeComment(blog, comment))
 		setComment('')
 	}
-	
+
 	return (
 		<div>
 			<h2>{blog.title}</h2>
 			<p>{blog.url}</p>
-			<p>{blog.likes} likes</p> 
+			<p>{blog.likes} likes</p>
 			<button onClick={addLike}>Like</button>
 			<p>Added by {blog.user.name}</p>
 			{loggedUser.username === blog.user.username ? (
-					<button onClick={delBlog}>Remove</button>
-				) : (
-					''
+				<button onClick={delBlog}>Remove</button>
+			) : (
+				''
 			)}
 
 			<h3>Comments</h3>
 			<form onSubmit={addComment}>
-				<input onChange={({target}) => setComment(target.value)} value={comment} />
-				<button type="submit" >Add Comment</button>
+				<input
+					onChange={({target}) => setComment(target.value)}
+					value={comment}
+				/>
+				<button type="submit">Add Comment</button>
 			</form>
-			
-			<ul key={blog.comments.id}>
-				{blog.comments.map(com => 
-					<li>{com}</li>
-				)}
-			</ul>
 
-			
+			<ul key={blog.comments.id}>
+				{blog.comments.map(com => (
+					<li>{com}</li>
+				))}
+			</ul>
 		</div>
 	)
-	
 }
 
 export default Blog

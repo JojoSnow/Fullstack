@@ -22,7 +22,7 @@ const App = () => {
 	const blogFormRef = useRef()
 
 	const dispatch = useDispatch()
-	
+
 	useEffect(() => {
 		dispatch(initializeBlogs())
 		dispatch(initializeUsers())
@@ -55,33 +55,33 @@ const App = () => {
 			{blogs
 				// .sort((a, b) => a.likes + b.likes)
 				.map(blog => (
-					<Blogs
-						key={blog.id}
-						blog={blog}
-					/>
+					<Blogs key={blog.id} blog={blog} />
 				))}
 		</div>
 	)
 
 	const padding = {
-		padding: 5
+		padding: 5,
 	}
 
 	const navStyle = {
 		backgroundColor: 'lightgrey',
-		padding: 5
+		padding: 5,
 	}
 
 	return (
 		<div>
-			
 			{loggedUser === null ? (
 				<LoginForm />
 			) : (
 				<div>
 					<div style={navStyle}>
-						<Link style={padding} to="/">Blogs</Link>
-						<Link style={padding} to="/users">Users</Link>
+						<Link style={padding} to="/">
+							Blogs
+						</Link>
+						<Link style={padding} to="/users">
+							Users
+						</Link>
 						{loggedUser.name} logged in{' '}
 						<button id="logoutBtn" onClick={handleLogout}>
 							Logout
@@ -89,14 +89,21 @@ const App = () => {
 					</div>
 
 					<h2>Blog App</h2>
-					<p>
-						
-					</p>
+					<p></p>
 					<Routes>
-						<Route path='/users' element ={<Users users={users} />} />
-						<Route path='/users/:id' element={<User users={users} />} />
-						<Route path='/blogs/:id' element={<Blog blogs={blogs} />} />
-						<Route path='/' element={blogsDiv()} />
+						<Route
+							path="/users"
+							element={<Users users={users} />}
+						/>
+						<Route
+							path="/users/:id"
+							element={<User users={users} />}
+						/>
+						<Route
+							path="/blogs/:id"
+							element={<Blog blogs={blogs} />}
+						/>
+						<Route path="/" element={blogsDiv()} />
 					</Routes>
 				</div>
 			)}

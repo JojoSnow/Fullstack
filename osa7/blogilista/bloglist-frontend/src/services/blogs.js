@@ -29,7 +29,7 @@ const createComment = async (blog, comment) => {
 		url: blog.url,
 		id: blog.id,
 		likes: blog.likes,
-		comments: comments
+		comments: comments,
 	}
 	const request = axios.put(`${baseUrl}/${blog.id}`, newObject)
 	const response = await request
@@ -51,7 +51,7 @@ const del = async id => {
 	return response.data
 }
 
-const like = async (blog) => {
+const like = async blog => {
 	const likes = blog.likes + 1
 	const newObject = {
 		title: blog.title,
@@ -59,7 +59,7 @@ const like = async (blog) => {
 		url: blog.url,
 		id: blog.id,
 		comments: blog.comments,
-		likes: likes
+		likes: likes,
 	}
 	const request = await axios.put(`${baseUrl}/${blog.id}`, newObject)
 	return request.data

@@ -6,12 +6,14 @@ const Blogs = ({blog}) => {
 		border: 'solid',
 		borderWidth: '1px',
 		padding: '5px',
-		marginBottom: '5px' 
+		marginBottom: '5px',
 	}
 
 	return (
 		<div style={blogStyle} id={blog.id}>
-			<Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
+			<Link to={`/blogs/${blog.id}`}>
+				{blog.title} {blog.author}
+			</Link>
 		</div>
 	)
 }
