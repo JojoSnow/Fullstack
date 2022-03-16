@@ -1,20 +1,17 @@
 import PropTypes from 'prop-types'
+import { ListGroup } from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 
 const Blogs = ({blog}) => {
-	const blogStyle = {
-		border: 'solid',
-		borderWidth: '1px',
-		padding: '5px',
-		marginBottom: '5px',
-	}
 
 	return (
-		<div style={blogStyle} id={blog.id}>
-			<Link to={`/blogs/${blog.id}`}>
-				{blog.title} {blog.author}
-			</Link>
-		</div>
+		<ListGroup id={blog.id}>
+			<ListGroup.Item>
+				<Link to={`/blogs/${blog.id}`}>
+					{blog.title} {blog.author}
+				</Link>
+			</ListGroup.Item>
+		</ListGroup>
 	)
 }
 

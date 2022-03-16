@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Routes, Route, Link} from 'react-router-dom'
+import {Navbar, Button, Nav} from 'react-bootstrap'
 
 import Blogs from './components/Blogs'
 import Blog from './components/Blog'
@@ -51,6 +52,7 @@ const App = () => {
 
 	const blogsDiv = () => (
 		<div>
+			<h2 className="my-3">Blogs</h2>
 			{blogForm()}
 			{blogs
 				// .sort((a, b) => a.likes + b.likes)
@@ -60,36 +62,42 @@ const App = () => {
 		</div>
 	)
 
-	const padding = {
-		padding: 5,
-	}
-
-	const navStyle = {
-		backgroundColor: 'lightgrey',
-		padding: 5,
-	}
-
 	return (
-		<div>
+		<div className='container'>
 			{loggedUser === null ? (
 				<LoginForm />
 			) : (
-				<div>
-					<div style={navStyle}>
-						<Link style={padding} to="/">
-							Blogs
-						</Link>
-						<Link style={padding} to="/users">
-							Users
-						</Link>
-						{loggedUser.name} logged in{' '}
-						<button id="logoutBtn" onClick={handleLogout}>
-							Logout
-						</button>
-					</div>
-
-					<h2>Blog App</h2>
-					<p></p>
+				<>
+					<Navbar collapseOnSelect expand="lg" bg="light" variant="light" className="mt-2">
+						<Navbar.Brand>Blog App</Navbar.Brand>
+						<Navbar.Toggle aria-controls="responsive-navbar-nav" />
+						<Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+							<Nav>
+								<Nav.Item as="li">
+									<Nav.Link href="#" as="span">
+										<Link to="/">
+											Blogs
+										</Link>
+									</Nav.Link>
+								</Nav.Item>
+								<Nav.Item as="li">
+									<Nav.Link href="#" as="span">
+										<Link to="/users">
+											Users
+										</Link>
+									</Nav.Link>
+								</Nav.Item>
+								<Nav.Item as="li">
+										<Navbar.Text className="mr-2">
+											{loggedUser.name} logged in
+											<Button variant="outline-dark" size="sm" id="logoutBtn" onClick={handleLogout}>
+												Logout
+											</Button>
+										</Navbar.Text>
+								</Nav.Item>
+							</Nav>
+						</Navbar.Collapse>
+					</Navbar>
 					<Routes>
 						<Route
 							path="/users"
@@ -105,7 +113,8 @@ const App = () => {
 						/>
 						<Route path="/" element={blogsDiv()} />
 					</Routes>
-				</div>
+				</>
+					
 			)}
 		</div>
 	)

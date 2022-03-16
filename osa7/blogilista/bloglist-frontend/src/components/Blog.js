@@ -2,6 +2,7 @@ import {useState} from 'react'
 import {useParams, useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import {likeBlog, deleteBlog, makeComment} from '../reducers/blogReducer'
+import {Button, ListGroup, Form} from 'react-bootstrap'
 
 const Blog = ({blogs}) => {
 	const [comment, setComment] = useState('')
@@ -32,31 +33,32 @@ const Blog = ({blogs}) => {
 
 	return (
 		<div>
-			<h2>{blog.title}</h2>
+			<h2 className="my-3">{blog.title}</h2>
 			<p>{blog.url}</p>
 			<p>{blog.likes} likes</p>
-			<button onClick={addLike}>Like</button>
+			<Button size="sm" className="mb-2" onClick={addLike}>Like</Button>
 			<p>Added by {blog.user.name}</p>
 			{loggedUser.username === blog.user.username ? (
-				<button onClick={delBlog}>Remove</button>
+				<Button onClick={delBlog}>Remove</Button>
 			) : (
 				''
 			)}
 
-			<h3>Comments</h3>
-			<form onSubmit={addComment}>
-				<input
+			
+			<Form onSubmit={addComment}>
+				<Form.Label>Comment:</Form.Label>
+				<Form.Control
 					onChange={({target}) => setComment(target.value)}
 					value={comment}
 				/>
-				<button type="submit">Add Comment</button>
-			</form>
-
-			<ul key={blog.comments.id}>
+				<Button className="mt-2 mb-4" type="submit">Add Comment</Button>
+			</Form>
+			<h3>Comments</h3>
+			<ListGroup key={blog.comments.id}>
 				{blog.comments.map(com => (
-					<li>{com}</li>
+					<ListGroup.Item key={Date.now()}>{com}</ListGroup.Item>
 				))}
-			</ul>
+			</ListGroup>
 		</div>
 	)
 }
