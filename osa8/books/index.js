@@ -88,6 +88,7 @@ const typeDefs = gql`
 		bookCount: Int!
 		authorCount: Int!
 		allBooks: [Book!]!
+		allAuthors: [Author!]!
 	}
 
 	type Book {
@@ -97,13 +98,21 @@ const typeDefs = gql`
 		genres: [String!]!
 		id: ID!
 	}
+
+	type Author {
+		name: String!
+		born: Int
+		id: ID!
+		bookCount: Int
+	}
 `
 
 const resolvers = {
 	Query: {
 		bookCount: () => books.length,
 		authorCount: () => authors.length,
-		allBooks: () => books
+		allBooks: () => books,
+		allAuthors: () => authors
 	},
 	Book: {
 		title: (root) => root.title,
@@ -111,6 +120,20 @@ const resolvers = {
 		published: (root) => root.published,
 		id: (root) => root.id,
 		genres: (root) => root.genres
+	},
+	Author: {
+		name: (root) => root.name,
+		born: (root) => root.born,
+		id: (root) => root.id,
+		bookCount: (root, args) => {
+			let authorBooks = []
+			books.map(book => {
+				if(book.author === root.name) {
+					authorBooks.push(book)
+				}	
+			})
+			return authorBooks.length
+		}
 	}
 }
 
