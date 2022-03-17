@@ -1,5 +1,4 @@
 const {ApolloServer, UserInputError, gql} = require('apollo-server')
-const { getArgumentValues } = require('graphql/execution/values')
 const {v1: uuid} = require('uuid')
 
 let persons = [
