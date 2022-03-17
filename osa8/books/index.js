@@ -120,6 +120,12 @@ const typeDefs = gql`
 	}
 `
 
+const addAuthor = (name) => {
+	const newAuthor = {name: name}
+	authors = authors.concat(newAuthor)
+	return newAuthor
+}
+
 const resolvers = {
 	Query: {
 		bookCount: () => books.length,
@@ -180,14 +186,12 @@ const resolvers = {
 		addBook: (root, args) => {
 			const book = {...args, id: uuid()}
 			books = books.concat(book)
-			const addAuthor = () => {
-				if(!authors.includes(args.author)) {
-					const newAuthor = {name: args.author}
-					authors = authors.concat(newAuthor)
-					return newAuthor
-				}	
+			const authorNames = authors.map(a => a.name)
+			console.log(authorNames)
+			if(!authorNames.includes(args.author)) {
+				console.log(args.author)
+				addAuthor(args.author)
 			}
-			addAuthor()
 			return book
 		}
 	}
