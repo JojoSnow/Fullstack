@@ -103,7 +103,7 @@ const typeDefs = gql`
 	type Query {
 		bookCount: Int!
 		authorCount: Int!
-		allBooks(author: String, genre: String): [Book!]!
+		allBooks: [Book!]!
 		allAuthors: [Author!]!
 	}
 
@@ -134,32 +134,33 @@ const resolvers = {
 	Query: {
 		bookCount: () => books.length,
 		authorCount: () => authors.length,
-		allBooks: (root, args) => {
-			if (args.author && args.genre) {
-				let authorGenreBooks = []
-				books.map(book => {
-					if(book.author === args.author && book.genres.includes(args.genre)) {
-						authorGenreBooks.push(book)
-					}
-				})
-				return authorGenreBooks
-			}
+		// allBooks: (root, args) => {
+		// 	if (args.author && args.genre) {
+		// 		let authorGenreBooks = []
+		// 		books.map(book => {
+		// 			if(book.author === args.author && book.genres.includes(args.genre)) {
+		// 				authorGenreBooks.push(book)
+		// 			}
+		// 		})
+		// 		return authorGenreBooks
+		// 	}
 
-			if (args.author) {
-				let authorBooks = []
-				books.map(book => book.author === args.author ? authorBooks.push(book) : book)
-				return authorBooks
-			}
+		// 	if (args.author) {
+		// 		let authorBooks = []
+		// 		books.map(book => book.author === args.author ? authorBooks.push(book) : book)
+		// 		return authorBooks
+		// 	}
 
-			if (args.genre) {
-				let genreBooks = []
-				books.map(book => {
-					book.genres.map(genre => genre === args.genre ? genreBooks.push(book) : genre)
-				})
-				return genreBooks
-			}
+		// 	if (args.genre) {
+		// 		let genreBooks = []
+		// 		books.map(book => {
+		// 			book.genres.map(genre => genre === args.genre ? genreBooks.push(book) : genre)
+		// 		})
+		// 		return genreBooks
+		// 	}
 			
-		},
+		// },
+		allBooks: () => books,
 		allAuthors: () => authors
 	},
 
