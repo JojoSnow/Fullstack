@@ -96,8 +96,8 @@ const typeDefs = gql`
 	type Author {
 		name: String!
 		born: Int
-		id: ID!
 		bookCount: Int!
+		id: ID!
 	}	
 
 	type Query {
@@ -116,6 +116,8 @@ const typeDefs = gql`
 		): Book
 		addAuthor(
 			name: String!
+			born: Int
+			bookCount: Int
 		): Author
 		editAuthor(
 			name: String!
@@ -125,7 +127,7 @@ const typeDefs = gql`
 `
 
 const addAuthor = (name) => {
-	const newAuthor = {name: name}
+	const newAuthor = {name: name, bookCount: parseInt(1), id: uuid()}
 	authors = authors.concat(newAuthor)
 	return newAuthor
 }

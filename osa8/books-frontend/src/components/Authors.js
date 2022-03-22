@@ -8,6 +8,7 @@ const Authors = (props) => {
 		return null
 	}
 
+	// console.log(result.data.allAuthors)
 	const authors = result.data.allAuthors
 
 	return (
