@@ -16,7 +16,7 @@ mongoose.connect(MONGODB_URI)
 		console.log(('error connection to MongoDB: ', error.message))
 	})
 
-// let authors = [
+// Author.insertMany([
 // 	{
 // 		name: 'Robert Martin',
 //     	id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
@@ -40,14 +40,14 @@ mongoose.connect(MONGODB_URI)
 // 		name: 'Sandi Metz', // birthyear not known
 //     	id: "afa5b6f3-344d-11e9-a414-719c6709cf3e"
 // 	}
-// ]
+// ])
 
 /*
  * It might make more sense to associate a book with its author by storing the author's id in the context of the book instead of the author's name
  * However, for simplicity, we will store the author's name in connection with the book
 */
 
-// let books = [
+// Book.insertMany([
 // 	{
 // 		title: 'Clean Code',
 // 		published: 2008,
@@ -97,12 +97,12 @@ mongoose.connect(MONGODB_URI)
 // 		id: "afa5de04-344d-11e9-a414-719c6709cf3e",
 // 		genres: ['classic', 'revolution']
 // 	}
-// ]
+// ])
 
 const typeDefs = gql`
 	type Book {
 		title: String!
-		author: String!
+		author: Author!
 		published: Int!
 		genres: [String!]!
 		id: ID!
@@ -133,7 +133,7 @@ const typeDefs = gql`
 			name: String!
 			born: Int
 			bookCount: Int!
-		): Author
+		): Author!
 		editAuthor(
 			name: String!
 			born: Int!
@@ -142,13 +142,19 @@ const typeDefs = gql`
 `
 
 const addAuthor = async (args) => {
-	const author = new Author({name: args.author, born: null, bookCount: 1})
-	await author.save()
+	const author = await new Author({name: args.author})
+	try {
+		await author.save()
+	} catch (error) {
+		throw new UserInputError(error.message, {
+			invalidArgs: args
+		})
+	}
 }
 
 const resolvers = {
 	Query: {
-		bookCount: async () => Book.collection.countDocuments(),
+		bookCount: async () => Book.collection.countDocuments(),	
 		authorCount: async () => Author.collection.countDocuments(),
 		// allBooks: (root, args) => {
 		// 	if (args.author && args.genre) {
@@ -185,28 +191,24 @@ const resolvers = {
 	},
 
 	Author: {
-		bookCount: (root, args) => {
-			// let authorBooks = []
-			// books.map(book => {
-			// 	if(book.author === root.name) {
-			// 		authorBooks.push(book)
-			// 	}	
-			// })
-			return 1
+		bookCount: async (root, args) => {
+			const books = await Book.find({author: {$in: root.name}})
+			return parseInt(books.length)
 		}
 	},
 
 	Mutation: {
 		addBook: async (root, args) => {
-			const book = new Book({...args})
+			const findAuthor = await Author.findOne({name: args.author})
+			
+			if(!findAuthor) {
+				await addAuthor(args)
+			}
+
+			const author = await Author.findOne({name: args.author})
+			const book = await new Book({...args, author: author})
 
 			try {
-				const findAuthor = await Author.findOne({name: args.author})
-				
-				if(!findAuthor) {
-					addAuthor(args)
-				}
-				
 				await book.save()
 			} catch (error) {
 				throw new UserInputError(error.message, {
@@ -215,14 +217,17 @@ const resolvers = {
 			}
 			return book
 		},
-		editAuthor: (root, args) => {
-			const author = authors.find(a => a.name === args.name)
+		editAuthor: async (root, args) => {
+			const author = await Author.findOne({name: args.name})
+			
 			if(!author) {
 				return null
 			}
-			const updatedAuthor = {...author, born: args.born}
-			authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
-			return updatedAuthor
+			
+			await Author.updateOne(
+				{name: {$in: args.name}},
+				{$set: {born: args.born}}
+			)
 		}
 	}
 }
