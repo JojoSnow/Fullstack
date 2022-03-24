@@ -31,14 +31,6 @@ mongoose.connect(MONGODB_URI)
 // 		name: 'Fyodor Dostoevsky',
 //     	id: "afa5b6f1-344d-11e9-a414-719c6709cf3e",
 //     	born: 1821
-// 	},
-// 	{
-// 		name: 'Joshua Kerievsky', // birthyear not known
-//     	id: "afa5b6f2-344d-11e9-a414-719c6709cf3e"
-// 	},
-// 	{
-// 		name: 'Sandi Metz', // birthyear not known
-//     	id: "afa5b6f3-344d-11e9-a414-719c6709cf3e"
 // 	}
 // ])
 
@@ -142,7 +134,7 @@ const typeDefs = gql`
 `
 
 const addAuthor = async (args) => {
-	const author = await new Author({name: args.author})
+	const author = await new Author({name: args.author, bookCount: 1})
 	try {
 		await author.save()
 	} catch (error) {
@@ -156,32 +148,6 @@ const resolvers = {
 	Query: {
 		bookCount: async () => Book.collection.countDocuments(),	
 		authorCount: async () => Author.collection.countDocuments(),
-		// allBooks: (root, args) => {
-		// 	if (args.author && args.genre) {
-		// 		let authorGenreBooks = []
-		// 		books.map(book => {
-		// 			if(book.author === args.author && book.genres.includes(args.genre)) {
-		// 				authorGenreBooks.push(book)
-		// 			}
-		// 		})
-		// 		return authorGenreBooks
-		// 	}
-
-		// 	if (args.author) {
-		// 		let authorBooks = []
-		// 		books.map(book => book.author === args.author ? authorBooks.push(book) : book)
-		// 		return authorBooks
-		// 	}
-
-		// 	if (args.genre) {
-		// 		let genreBooks = []
-		// 		books.map(book => {
-		// 			book.genres.map(genre => genre === args.genre ? genreBooks.push(book) : genre)
-		// 		})
-		// 		return genreBooks
-		// 	}
-			
-		// },
 		allBooks: async () => {
 			return Book.find({})
 		},
@@ -190,19 +156,20 @@ const resolvers = {
 		}
 	},
 
-	Author: {
-		bookCount: async (root, args) => {
-			const books = await Book.find({author: {$in: root.name}})
-			return parseInt(books.length)
-		}
-	},
-
 	Mutation: {
 		addBook: async (root, args) => {
 			const findAuthor = await Author.findOne({name: args.author})
 			
+			
 			if(!findAuthor) {
 				await addAuthor(args)
+			} else {
+				const author1 = await Author.findOne({name: args.author})
+				const bookCount = author1.bookCount + 1
+				await Author.updateOne(
+					{name: {$in: args.author}},
+					{$set: {bookCount: bookCount}}
+				)
 			}
 
 			const author = await Author.findOne({name: args.author})
