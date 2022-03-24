@@ -139,7 +139,7 @@ const addAuthor = async (args) => {
 		await author.save()
 	} catch (error) {
 		throw new UserInputError(error.message, {
-			invalidArgs: args
+			invalidArgs: args.author
 		})
 	}
 }
@@ -179,7 +179,7 @@ const resolvers = {
 				await book.save()
 			} catch (error) {
 				throw new UserInputError(error.message, {
-					invalidArgs: args
+					invalidArgs: args.title
 				})
 			}
 			return book
@@ -190,11 +190,17 @@ const resolvers = {
 			if(!author) {
 				return null
 			}
+			try {
+				await Author.updateOne(
+					{name: {$in: args.name}},
+					{$set: {born: args.born}}
+				)
+			} catch (error) {
+				throw new UserInputError(error.message, {
+					invalidArgs: args
+				})
+			}
 			
-			await Author.updateOne(
-				{name: {$in: args.name}},
-				{$set: {born: args.born}}
-			)
 		}
 	}
 }
