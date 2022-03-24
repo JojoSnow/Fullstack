@@ -108,7 +108,6 @@ const resolvers = {
 
 	Book: {
 		author: async (parent, root, args) => {
-			console.log(await parent.author)
 			const author =  await Author.findOne({_id: parent.author})
 			return {
 				name: author.name,
