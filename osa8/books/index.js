@@ -69,6 +69,9 @@ const typeDefs = gql`
 			name: String!
 			born: Int!
 		): Author
+		findBookByGenre(
+			genre: String!
+		): [Book!]!
 		createUser(
 			username: String!
 			favouriteGenre: String!
@@ -108,12 +111,19 @@ const resolvers = {
 
 	Book: {
 		author: async (parent, root, args) => {
-			const author =  await Author.findOne({_id: parent.author})
+			let id
+			if (typeof parent.author === 'object') {
+				id = parent.author._id
+			} else {
+				id = parent.author
+			}
+
+			const author =  await Author.findOne({_id: id})
 			return {
 				name: author.name,
 				born: author.born,
 				bookCount: author.bookCount,
-				id: parent.author
+				id: id
 			}
 		}
 	},
@@ -173,6 +183,14 @@ const resolvers = {
 					invalidArgs: args
 				})
 			}	
+		},
+		findBookByGenre: async (root, args) => {
+			if (args.genre) {
+				const books = await Book.find({genres: {$in: args.genre}})
+				return books
+			} else {
+				return null
+			}
 		},
 		createUser: async (root, args) => {
 			const user = new User({...args})
