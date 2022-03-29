@@ -28,6 +28,16 @@ export const ALL_BOOKS = gql`
 	}
 `
 
+export const CURRENT_USER = gql `
+	query {
+		me {
+			username
+			favouriteGenre
+			id
+		}
+	}
+`
+
 export const FIND_BY_GENRE = gql`
 	mutation findBookByGenre ($genre: String!) {
 		findBookByGenre (

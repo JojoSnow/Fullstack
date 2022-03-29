@@ -104,8 +104,9 @@ const resolvers = {
 		allAuthors: async () => {
 			return Author.find({})
 		},
-		me: (root, args, context) => {
-			return context.currentUser
+		me: async (root, args, context) => {
+			const user = await context.currentUser
+			return user
 		}
 	},
 
@@ -213,7 +214,7 @@ const resolvers = {
 			}
 
 			const userForToken = {
-				usernamne: user.username,
+				username: user.username,
 				id: user._id
 			}
 

@@ -6,7 +6,7 @@ const Books = (props) => {
 	const result = useQuery(ALL_BOOKS)
 	const [findBooksByGenre] = useMutation(FIND_BY_GENRE)
 	const [genre, setGenre] = useState('')
-	const [booksOfGenre, setGenreBooks] = useState('')
+	const [booksOfGenre, setGenreBooks] = useState([])
 	let findBooks = []
 	const genres = []
 
