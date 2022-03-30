@@ -16,7 +16,7 @@ const Recommend = (props) => {
 	let findBooks = []
 
 	const token = localStorage.getItem('libraryUserToken')
-	console.log(user.data)
+	
 	useEffect(() => {
 		if (token  && user.data.me) {
 			setGenre(user.data.me.favouriteGenre)

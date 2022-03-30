@@ -43,7 +43,7 @@ const Authors = (props) => {
 						<th>books</th>
 					</tr>
 					{authors.map((a) => (
-			  			<tr key={a.id}>
+			  			<tr key={a.name}>
 							<td>{a.name}</td>
 							<td>{a.born}</td>
 							<td>{a.bookCount}</td>
