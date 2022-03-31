@@ -59,7 +59,7 @@ const calculateExercise = (week: Array<number>, target: number): Result => {
 			throw new Error('Something went wrong.');
 	}
 
-	if (rating === target) {
+	if (average > target) {
 		success = true;
 	}
 
