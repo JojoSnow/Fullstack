@@ -45,6 +45,10 @@ app.post('/exercises', (req, res) => {
 		return res.send({error: 'Malformatted parameters'}).status(400);
 	}
 
+	if (hours !== Array) {
+		return res.send({error: 'Malformatted parameters'}).status(400);
+	}
+
 	const result = calculateExercise(hours, Number(target));
 	return res.send(result);
 });
