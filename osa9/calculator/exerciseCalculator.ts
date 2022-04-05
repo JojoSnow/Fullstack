@@ -12,7 +12,7 @@ interface Result {
 const parseArguments = (args: Array<string>) => {
 	if (args.length < 4) throw new Error('Not enough arguments');
 
-	let hours = [];
+	const hours = [];
 
 	for (let i = 2; i < args.length - 1; ++i) {
 		if (!isNaN(Number(args[i]))) {
@@ -22,14 +22,14 @@ const parseArguments = (args: Array<string>) => {
 		}	
 	}
 
-	const target = Number(args[args.length - 1])
+	const target = Number(args[args.length - 1]);
 	if (target > 3 || target === 0) throw new Error('Place target at the end');
 
 	return {
 		days: hours,
 		target: Number(target)
-	}
-}
+	};
+};
 
 const calculateExercise = (days: Array<number>, target: number): Result => {
 	let trainingDays = 0;
@@ -42,7 +42,7 @@ const calculateExercise = (days: Array<number>, target: number): Result => {
 	
 	days.forEach(day => {
 		average += day;
-	})
+	});
 
 	average = average / periodLength;
 
@@ -50,7 +50,7 @@ const calculateExercise = (days: Array<number>, target: number): Result => {
 		if(day !== 0) {
 			trainingDays += 1;
 		}
-	})
+	});
 
 	switch(true) {
 		case (periodLength <= 3):
@@ -92,17 +92,17 @@ const calculateExercise = (days: Array<number>, target: number): Result => {
 		ratingDesc,
 		target,
 		average
-	}
+	};
 };
 
 try {
 	const {days, target} = parseArguments(process.argv);
 	console.log(calculateExercise(days, target));
-	console.log('If your target is wrong, you didn\'t place it in the end of your array.')
+	console.log('If your target is wrong, you didn\'t place it in the end of your array.');
 } catch (error: unknown) {
 	let errorMsg = 'Something bad happened.';
 	if (error instanceof Error) {
 		errorMsg += ' Error: ' + error.message;
 	}
-	console.log(errorMsg)
+	console.log(errorMsg);
 }

@@ -32,7 +32,7 @@ export const calculateBmi = (h: number, w: number): string => {
 		default:
 			throw new Error('Calculation error');
 	}
-}
+};
 
 // try {
 // 	const {height, weight} = parseArgs(process.argv);
