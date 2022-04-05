@@ -15,8 +15,8 @@ app.post('/calculate', (req, res) => {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-	const result = calculator(value1, value2, op);
-	res.send(result);
+	const result = calculator(Number(value1), Number(value2), op);
+	return res.send(result);
 });
 
 const PORT = 3003;
