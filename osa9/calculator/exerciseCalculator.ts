@@ -9,29 +9,29 @@ interface Result {
 }
 
 
-const parseArguments = (args: Array<string>) => {
-	if (args.length < 4) throw new Error('Not enough arguments');
+// const parseArguments = (args: Array<string>) => {
+// 	if (args.length < 4) throw new Error('Not enough arguments');
 
-	const hours = [];
+// 	const hours = [];
 
-	for (let i = 2; i < args.length - 1; ++i) {
-		if (!isNaN(Number(args[i]))) {
-			hours.push(Number(args[i]));
-		} else {
-			throw new Error('Provided values were not numbers.');
-		}	
-	}
+// 	for (let i = 2; i < args.length - 1; ++i) {
+// 		if (!isNaN(Number(args[i]))) {
+// 			hours.push(Number(args[i]));
+// 		} else {
+// 			throw new Error('Provided values were not numbers.');
+// 		}	
+// 	}
 
-	const target = Number(args[args.length - 1]);
-	if (target > 3 || target === 0) throw new Error('Place target at the end');
+// 	const target = Number(args[args.length - 1]);
+// 	if (target > 3 || target === 0) throw new Error('Place target at the end');
 
-	return {
-		days: hours,
-		target: Number(target)
-	};
-};
+// 	return {
+// 		days: hours,
+// 		target: Number(target)
+// 	};
+// };
 
-const calculateExercise = (days: Array<number>, target: number): Result => {
+export const calculateExercise = (days: Array<number>, target: number): Result => {
 	let trainingDays = 0;
 	let rating = 0;
 	let ratingDesc = '';
@@ -51,7 +51,6 @@ const calculateExercise = (days: Array<number>, target: number): Result => {
 			trainingDays += 1;
 		}
 	});
-
 	switch(true) {
 		case (periodLength <= 3):
 			rating = 1;
@@ -95,14 +94,14 @@ const calculateExercise = (days: Array<number>, target: number): Result => {
 	};
 };
 
-try {
-	const {days, target} = parseArguments(process.argv);
-	console.log(calculateExercise(days, target));
-	console.log('If your target is wrong, you didn\'t place it in the end of your array.');
-} catch (error: unknown) {
-	let errorMsg = 'Something bad happened.';
-	if (error instanceof Error) {
-		errorMsg += ' Error: ' + error.message;
-	}
-	console.log(errorMsg);
-}
+// try {
+// 	const {days, target} = parseArguments(process.argv);
+// 	console.log(calculateExercise(days, target));
+// 	console.log('If your target is wrong, you didn\'t place it in the end of your array.');
+// } catch (error: unknown) {
+// 	let errorMsg = 'Something bad happened.';
+// 	if (error instanceof Error) {
+// 		errorMsg += ' Error: ' + error.message;
+// 	}
+// 	console.log(errorMsg);
+// }

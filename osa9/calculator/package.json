@@ -8,7 +8,7 @@
 		"calculateExercises": "ts-node exerciseCalculator.ts",
 		"start": "ts-node index.ts",
 		"dev": "ts-node-dev index.ts",
-		"lint": "eslint --ext .ts ."
+		"eslint": "eslint --ext .ts ."
 	},
 	"author": "Jojo",
 	"license": "MIT",
