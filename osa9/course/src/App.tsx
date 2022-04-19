@@ -78,7 +78,7 @@ const Part = ({part}: {part: CoursePart}): JSX.Element => {
 				<div>
 					<h3>{part.name} {part.exerciseCount}</h3>
 					<p>{part.description}</p>
-					<p>Required skills: {part.requirements}</p>
+					<p>Required skills: {part.requirements[0]}, {part.requirements[1]}</p>
 				</div>
 			);
 		default:
