@@ -27,7 +27,7 @@ const addPatient = (patient: NewPatient): Patients => {
 const getPatientById = (id: string): Patient => {
 	const foundPatient = patients.filter(p => p.id === id);
 	return foundPatient[0];
-}
+};
 
 export default {
 	getNonSensitivePatients,

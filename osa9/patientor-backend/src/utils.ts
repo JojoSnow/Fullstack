@@ -8,7 +8,8 @@ const toNewPatient = ({name, dateOfBirth, ssn, gender, occupation}: Fields): New
 		dateOfBirth: parseDateOfBirth(dateOfBirth),
 		ssn: parseSsn(ssn),
 		gender: parseGender(gender),
-		occupation: parseOccupation(occupation)
+		occupation: parseOccupation(occupation),
+		entries: []
 	}
 	return newPatient;
 };
@@ -24,12 +25,8 @@ const parseName = (name: unknown) => {
 	return name;
 };
 
-const isDate = (date: string): boolean => {
-	return Boolean(Date.parse(date));
-};
-
 const parseDateOfBirth = (dateOfBirth: unknown): string => {
-	if (!dateOfBirth || !isString(dateOfBirth) || !isDate(dateOfBirth)) {
+	if (!dateOfBirth || !isString(dateOfBirth)) {
 		throw new Error('Incorrect or missing date of birth: ' + dateOfBirth);
 	}
 	return dateOfBirth;
