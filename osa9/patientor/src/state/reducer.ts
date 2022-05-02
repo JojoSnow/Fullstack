@@ -2,16 +2,12 @@ import { State } from "./state";
 import { Patient } from "../types";
 
 export type Action =
-  | {
-      type: "SET_PATIENT_LIST";
+    {
+      type: string;
       payload: Patient[];
     }
   | {
-      type: "ADD_PATIENT";
-      payload: Patient;
-    }
-  | {
-      type: "SET_PATIENT";
+      type: string;
       payload: Patient;
     };
 
@@ -20,16 +16,17 @@ export const reducer = (state: State, action: Action): State => {
     case "SET_PATIENT_LIST":
       return {
         ...state,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         patients: {
-          ...action.payload.reduce(
-            (memo, patient) => ({ ...memo, [patient.id]: patient }),
+          ...Object.values(action.payload).reduce(
+            (memo: Patient[], patient: Patient) => ({ ...memo, [patient.id]: patient }),
             {}
           ),
-          ...state.patients,
-          ...state.patient
+          ...state.patients
         }
       };
     case "ADD_PATIENT":
+      console.log(action);
       return {
         ...state,
         patients: {
@@ -38,6 +35,7 @@ export const reducer = (state: State, action: Action): State => {
         }
       };
     case "SET_PATIENT":
+      console.log(action);
       return {
         ...state,
         patients: {
@@ -50,4 +48,25 @@ export const reducer = (state: State, action: Action): State => {
     default:
       return state;
   }
+};
+
+export const setPatientList = (data: Patient[]) => {
+  return {
+    type: "SET_PATIENT_LIST",
+    payload: data
+  };
+};
+
+export const addPatient = (data: Patient) => {
+  return {
+    type: "ADD_PATIENT",
+    payload: data
+  };
+};
+
+export const setPatient = (data: Patient) => {
+  return {
+    type: "SET_PATIENT",
+    payload: data
+  };
 };
