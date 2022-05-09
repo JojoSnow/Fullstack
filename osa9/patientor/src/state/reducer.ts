@@ -31,7 +31,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         patients: {
           ...state.patients,
-          // [action.payload.id]: action.payload
+          [action.payload.id]: action.payload
         }
       };
     case "SET_PATIENT":
@@ -43,7 +43,7 @@ export const reducer = (state: State, action: Action): State => {
           ...state.patients
         },
         patient: <{patient: Patient}> {
-          // [action.payload.id]: action.payload
+          [action.payload.id]: action.payload
         }
       };
     default:
