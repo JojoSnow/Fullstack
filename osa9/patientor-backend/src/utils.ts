@@ -1,15 +1,15 @@
-import {NewPatient, Gender} from './types';
+import {NewPatient, Gender, Entry} from './types';
 
-type Fields = {name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown}
+type Fields = {name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries: unknown}
 
-const toNewPatient = ({name, dateOfBirth, ssn, gender, occupation}: Fields): NewPatient => {
+const toNewPatient = ({name, dateOfBirth, ssn, gender, occupation, entries}: Fields): NewPatient => {
 	const newPatient: NewPatient = {
 		name: parseName(name),
 		dateOfBirth: parseDateOfBirth(dateOfBirth),
 		ssn: parseSsn(ssn),
 		gender: parseGender(gender),
 		occupation: parseOccupation(occupation),
-		entries: []
+		entries: parseEntries(entries)
 	}
 	return newPatient;
 };
@@ -58,5 +58,16 @@ const parseOccupation = (occupation: unknown): string => {
 	}
 	return occupation;
 };
+
+const isEntry = (entries: unknown): entries is Entry[] => {
+	return entries instanceof Array;
+};
+
+const parseEntries = (entries: unknown): Entry[] => {
+	if (!entries || !isEntry(entries)) {
+		throw new Error('Incorrect or missing entry/entries: ' + entries);
+	}
+	return entries;
+}
 
 export default toNewPatient;
