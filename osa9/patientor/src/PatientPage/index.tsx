@@ -33,12 +33,26 @@ const PatientPage = () => {
 	if (foundPatient) {
 		return (
 			<div>
-				<Typography align="left" variant="h5" style={{ marginTop: "1em"}}>{foundPatient.name} </Typography>
+				<Typography align="left" variant="h4" style={{ marginTop: "1em"}}>{foundPatient.name} </Typography>
 				<List>
 					<ListItem>Gender: {foundPatient.gender}</ListItem>
 					<ListItem>Ssn: {foundPatient.ssn}</ListItem>
 					<ListItem>Occupation: {foundPatient.occupation}</ListItem>
 				</List>
+				<Typography align="left" variant="h6">Entries</Typography>
+				{foundPatient.entries.map(entry => {
+					return (
+						<>
+							<p>{entry.date} <i>{entry.description}</i></p>
+							<ul>
+								{entry.diagnosisCodes ?
+									entry.diagnosisCodes.map(code => <li key={code}>{code}</li>) :
+									''
+								}
+							</ul>
+						</>
+					);
+				})}
 				
 			</div>
 			
