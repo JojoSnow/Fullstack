@@ -18,3 +18,8 @@ export interface Patient {
   ssn?: string;
   dateOfBirth?: string;
 }
+
+export interface PatientList {
+  id: string;
+  patient: Patient
+}

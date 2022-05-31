@@ -1,10 +1,10 @@
 import { State } from "./state";
-import { Patient } from "../types";
+import { Patient, PatientList } from "../types";
 
 export type Action =
     {
       type: string;
-      payload: Patient[];
+      payload: PatientList;
     }
   | {
       type: string;
@@ -19,7 +19,7 @@ export const reducer = (state: State, action: Action): State => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         patients: {
           ...Object.values(action.payload).reduce(
-            (memo: Patient[], patient: Patient) => ({ ...memo, [patient.id]: patient }),
+            (memo: PatientList, patient: Patient) => ({ ...memo, [patient.id]: patient }),
             {}
           ),
           ...state.patients
@@ -29,7 +29,7 @@ export const reducer = (state: State, action: Action): State => {
       console.log(action);
       return {
         ...state,
-        patients: {
+        patients: <{patient: Patient}> {
           ...state.patients,
           [action.payload.id]: action.payload
         }
@@ -51,7 +51,7 @@ export const reducer = (state: State, action: Action): State => {
   }
 };
 
-export const setPatientList = (data: Patient[]) => {
+export const setPatientList = (data: PatientList) => {
   return {
     type: "SET_PATIENT_LIST",
     payload: data

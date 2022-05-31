@@ -5,7 +5,7 @@ import { Button, Divider, Container, Typography } from "@material-ui/core";
 
 import { apiBaseUrl } from "./constants";
 import { useStateValue, setPatientList } from "./state";
-import { Patient } from "./types";
+import { PatientList } from "./types";
 
 import PatientListPage from "./PatientListPage";
 import PatientPage from "./PatientPage";
@@ -17,7 +17,7 @@ const App = () => {
 
     const fetchPatientList = async () => {
       try {
-        const { data: patientListFromApi } = await axios.get<Patient[]>(
+        const { data: patientListFromApi } = await axios.get<PatientList>(
           `${apiBaseUrl}/patients`
         );
         dispatch(setPatientList(patientListFromApi));
