@@ -31,6 +31,11 @@ export interface Diagnose {
 	latin?: string;
 }
 
+export interface DiagnoseList {
+	id: string;
+	diagnose: Diagnose
+}
+
 export interface BaseEntry {
 	id: string;
 	description: string;

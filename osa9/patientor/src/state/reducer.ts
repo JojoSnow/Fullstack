@@ -1,5 +1,5 @@
 import { State } from "./state";
-import { Patient, PatientList } from "../types";
+import { Patient, PatientList, Diagnose, DiagnoseList } from "../types";
 
 export type Action =
     {
@@ -9,6 +9,10 @@ export type Action =
   | {
       type: string;
       payload: Patient;
+    }
+  | {
+      type: string;
+      payload: DiagnoseList;
     };
 
 export const reducer = (state: State, action: Action): State => {
@@ -46,6 +50,20 @@ export const reducer = (state: State, action: Action): State => {
           [action.payload.id]: action.payload
         }
       };
+    case "SET_DIAGNOSES":
+      console.log('action:', action);
+      console.log('state: ', state);
+      return {
+        ...state,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        diagnoses: {
+          ...Object.values(action.payload).reduce(
+            (memo: DiagnoseList, diagnose: Diagnose) => ({ ...memo, [diagnose.code]: diagnose }),
+            {}
+          ),
+          ...state.diagnoses
+        }
+      };
     default:
       return state;
   }
@@ -68,6 +86,13 @@ export const addPatient = (data: Patient) => {
 export const setPatient = (data: Patient) => {
   return {
     type: "SET_PATIENT",
+    payload: data
+  };
+};
+
+export const setDiagnoses = (data: DiagnoseList) => {
+  return {
+    type: "SET_DIAGNOSES",
     payload: data
   };
 };

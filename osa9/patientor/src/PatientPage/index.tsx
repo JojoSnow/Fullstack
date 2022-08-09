@@ -4,12 +4,12 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Typography, List, ListItem } from '@material-ui/core';
 
-import { useStateValue, setPatient } from "../state";
-import { Patient } from '../types';
+import { useStateValue, setPatient, setDiagnoses } from "../state";
+import { Patient, DiagnoseList, Diagnose, Entry } from '../types';
 import { apiBaseUrl } from '../constants';
- 
+
 const PatientPage = () => {
-	const [{ patient }, dispatch] = useStateValue();
+	const [{ patient, diagnoses }, dispatch] = useStateValue();
 	const { id } = useParams<{ id: string }>();
 
 	React.useEffect(() => {	
@@ -25,10 +25,22 @@ const PatientPage = () => {
 				console.error(e);
 			}
 		};
+		const fetchDiagnoses = async () => {
+			try {
+				const { data: diagnose } = await axios.
+				get<DiagnoseList>(
+					`${apiBaseUrl}/diagnoses`
+				);
+				dispatch(setDiagnoses(diagnose));
+			} catch (e) {
+				console.error(e);
+			}
+		};
 		void fetchPatient();
+		void fetchDiagnoses();
 	}, [dispatch]);
 
-	const foundPatient = Object.values(patient).find(p => p.id === id);
+	const foundPatient = Object.values(patient).find(p => p.id === id);	
 
 	if (foundPatient) {
 		return (
@@ -40,19 +52,26 @@ const PatientPage = () => {
 					<ListItem>Occupation: {foundPatient.occupation}</ListItem>
 				</List>
 				<Typography align="left" variant="h6">Entries</Typography>
-				{foundPatient.entries.map(entry => {
-					return (
-						<>
-							<p>{entry.date} <i>{entry.description}</i></p>
-							<ul>
-								{entry.diagnosisCodes ?
-									entry.diagnosisCodes.map(code => <li key={code}>{code}</li>) :
-									''
-								}
-							</ul>
-						</>
-					);
-				})}
+				{foundPatient?.entries.map((entry: Entry) => (
+					<>
+						<p>{entry.date}</p> <i>{entry.description}</i>
+						<ul>
+							{entry.diagnosisCodes ? 
+								entry.diagnosisCodes.map((code: string) => (
+									Object.values(diagnoses).map((diag: Diagnose) => {
+										if (diag.code === code) {
+											return (
+												<li key={code}>{diag.code} {diag.name}</li>
+											);
+										}
+									})
+								)) : 
+								''
+							}
+						</ul>
+					</>
+					)
+				)}
 				
 			</div>
 			
