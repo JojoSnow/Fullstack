@@ -3,13 +3,59 @@ import axios from 'axios';
 
 import { useParams } from 'react-router-dom';
 import { Typography, List, ListItem } from '@material-ui/core';
+import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
+import WorkIcon from '@material-ui/icons/Work';
+import HealingIcon from '@material-ui/icons/Healing';
 
-import { useStateValue, setPatient, setDiagnoses } from "../state";
-import { Patient, DiagnoseList, Diagnose, Entry } from '../types';
+import { useStateValue, setPatient } from "../state";
+import { Patient, Entry } from '../types';
 import { apiBaseUrl } from '../constants';
 
+const HospitalEntry = ({entry}: {entry: Entry}): JSX.Element => (
+	<li>
+		<LocalHospitalIcon /> {entry.date} 
+		<p><i>{entry.description}</i></p>
+		<p>diagnosed by {entry.specialist}</p>
+	</li>	
+);
+
+const OccupationalHealthcareEntry = ({entry}: {entry: Entry}): JSX.Element => (
+	<li>
+		<WorkIcon /> {entry.date}
+		<p><i>{entry.description}</i></p>
+		<p>diagnosed by {entry.specialist}</p>
+	</li>		
+);
+
+const HealthCheckEntry = ({entry}: {entry: Entry}): JSX.Element => (
+	<li>
+		<HealingIcon /> {entry.date} 
+		<p><i>{entry.description}</i></p>
+		<p>diagnosed by {entry.specialist}</p>
+	</li>	
+);
+
+const EntryDetails = ({entry}: {entry: Entry}): JSX.Element => {
+	switch (entry.type) {
+		case 'Hospital':
+			return <HospitalEntry entry={entry}/>;
+		case 'OccupationalHealthcare':
+			return <OccupationalHealthcareEntry entry={entry} />;
+		case 'HealthCheck':
+			return <HealthCheckEntry entry={entry} />;
+		default:
+			return assertNever(entry);
+	}
+};
+
+const assertNever = (value: never): never => {
+	throw new Error(
+		`Unhandled discriminated union member: ${JSON.stringify(value)}`
+	);
+};
+
 const PatientPage = () => {
-	const [{ patient, diagnoses }, dispatch] = useStateValue();
+	const [{ patient }, dispatch] = useStateValue();
 	const { id } = useParams<{ id: string }>();
 
 	React.useEffect(() => {	
@@ -25,19 +71,7 @@ const PatientPage = () => {
 				console.error(e);
 			}
 		};
-		const fetchDiagnoses = async () => {
-			try {
-				const { data: diagnose } = await axios.
-				get<DiagnoseList>(
-					`${apiBaseUrl}/diagnoses`
-				);
-				dispatch(setDiagnoses(diagnose));
-			} catch (e) {
-				console.error(e);
-			}
-		};
 		void fetchPatient();
-		void fetchDiagnoses();
 	}, [dispatch]);
 
 	const foundPatient = Object.values(patient).find(p => p.id === id);	
@@ -53,23 +87,9 @@ const PatientPage = () => {
 				</List>
 				<Typography align="left" variant="h6">Entries</Typography>
 				{foundPatient?.entries.map((entry: Entry) => (
-					<>
-						<p>{entry.date}</p> <i>{entry.description}</i>
-						<ul>
-							{entry.diagnosisCodes ? 
-								entry.diagnosisCodes.map((code: string) => (
-									Object.values(diagnoses).map((diag: Diagnose) => {
-										if (diag.code === code) {
-											return (
-												<li key={code}>{diag.code} {diag.name}</li>
-											);
-										}
-									})
-								)) : 
-								''
-							}
-						</ul>
-					</>
+					<ul style={{listStyleType: 'none', borderColor: 'black', borderStyle: 'solid'}} key={entry.id}>
+						<EntryDetails  entry={entry} />
+					</ul>
 					)
 				)}
 				
