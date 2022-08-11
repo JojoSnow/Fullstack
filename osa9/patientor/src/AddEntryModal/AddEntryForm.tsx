@@ -19,7 +19,8 @@ const typeOptions: TypeOption[] = [
  
 const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 	const [{ diagnoses }] = useStateValue();
-  
+	const diagnosesList = Object.values(diagnoses).map(d => d);
+	
 	return (
 		<Formik
 			initialValues={{
@@ -79,7 +80,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 					<DiagnosisSelection
 						setFieldValue={setFieldValue}
 						setFieldTouched={setFieldTouched}
-						diagnoses={Object.values(diagnoses)}
+						diagnoses={diagnosesList}
 					/>    
 					<Field
 						label="HealthCheckRating"
