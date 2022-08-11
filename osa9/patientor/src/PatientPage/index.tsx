@@ -7,9 +7,11 @@ import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import WorkIcon from '@material-ui/icons/Work';
 import HealingIcon from '@material-ui/icons/Healing';
 
-import { useStateValue, setPatient } from "../state";
-import { Patient, Entry } from '../types';
+import { useStateValue, setPatient, addEntry } from "../state";
+import { Patient, Entry, HealthCheckEntry } from '../types';
 import { apiBaseUrl } from '../constants';
+import { EntryFormValues } from '../AddEntryModal/AddEntryForm';
+import AddEntryModal from '../AddEntryModal';
 
 const HospitalEntry = ({entry}: {entry: Entry}): JSX.Element => (
 	<li>
@@ -27,7 +29,7 @@ const OccupationalHealthcareEntry = ({entry}: {entry: Entry}): JSX.Element => (
 	</li>		
 );
 
-const HealthCheckEntry = ({entry}: {entry: Entry}): JSX.Element => (
+const HealthCheckEntryy = ({entry}: {entry: Entry}): JSX.Element => (
 	<li>
 		<HealingIcon /> {entry.date} 
 		<p><i>{entry.description}</i></p>
@@ -42,7 +44,7 @@ const EntryDetails = ({entry}: {entry: Entry}): JSX.Element => {
 		case 'OccupationalHealthcare':
 			return <OccupationalHealthcareEntry entry={entry} />;
 		case 'HealthCheck':
-			return <HealthCheckEntry entry={entry} />;
+			return <HealthCheckEntryy entry={entry} />;
 		default:
 			return assertNever(entry);
 	}
@@ -57,6 +59,9 @@ const assertNever = (value: never): never => {
 const PatientPage = () => {
 	const [{ patient }, dispatch] = useStateValue();
 	const { id } = useParams<{ id: string }>();
+
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | undefined>();
 
 	React.useEffect(() => {	
 		const fetchPatient = async () => {
@@ -74,7 +79,35 @@ const PatientPage = () => {
 		void fetchPatient();
 	}, [dispatch]);
 
+	const openModal = (): void => setModalOpen(true);
+
+	const closeModal = (): void => {
+		setModalOpen(false);
+		setError(undefined);
+	};
+
 	const foundPatient = Object.values(patient).find(p => p.id === id);	
+
+	const submitNewEntry = async (values: EntryFormValues) => {
+		try {
+			if (id) {
+				const { data: newEntry } = await axios.post<HealthCheckEntry>(
+					`${apiBaseUrl}/patients/${id}/entries`,
+					values
+				);
+				dispatch(addEntry(newEntry));
+			}
+			closeModal();
+		} catch (e: unknown) {
+			if (axios.isAxiosError(e)) {
+				console.error(e?.response?.data || "Unrecognized axios error");
+				setError(String(e?.response?.data?.error) || "Unrecognized axios error");
+			} else {
+				console.error("Unknown error", e);
+				setError("Unknown error");
+			}
+		}
+	};
 
 	if (foundPatient) {
 		return (
@@ -87,15 +120,26 @@ const PatientPage = () => {
 				</List>
 				<Typography align="left" variant="h6">Entries</Typography>
 				{foundPatient?.entries.map((entry: Entry) => (
-					<ul style={{listStyleType: 'none', borderColor: 'black', borderStyle: 'solid'}} key={entry.id}>
-						<EntryDetails  entry={entry} />
+					<ul style={{
+							listStyleType: 'none', 
+							borderColor: 'black', 
+							borderStyle: 'solid'
+						}} 
+						key={entry.id}
+					>
+						<EntryDetails entry={entry} />
 					</ul>
 					)
 				)}
-
-			<Button variant="contained" color="primary">
-				Add Entry
-			</Button>
+				<AddEntryModal
+					modalOpen={modalOpen}
+					onSubmit={submitNewEntry}
+					error={error}
+					onClose={closeModal}
+				/>
+				<Button onClick={() => openModal()} variant="contained" color="primary">
+					Add Entry
+				</Button>
 				
 			</div>
 			

@@ -8,7 +8,7 @@ import {
   Typography,
   InputLabel
 } from "@material-ui/core";
-import { Diagnosis, Gender } from "../types";
+import { Diagnosis, Gender, Type } from "../types";
 import Input from '@material-ui/core/Input';
 
 // structure of a single option
@@ -17,11 +17,16 @@ export type GenderOption = {
   label: string;
 };
 
+export type TypeOption = {
+  value: Type;
+  label: string;
+};
+
 // props for select field component
 type SelectFieldProps = {
   name: string;
   label: string;
-  options: GenderOption[];
+  options: GenderOption[] | TypeOption[];
 };
 
 const FormikSelect = ({ field, ...props }: FieldProps) => <Select {...field} {...props} />;
