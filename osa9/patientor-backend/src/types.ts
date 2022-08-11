@@ -44,6 +44,44 @@ export type Entry =
 	| OccupationalHealthcareEntry
 	| HealthCheckEntry
 
+export interface HealthCheckEntries {
+	id: string;
+	description: string;
+	date: string;
+	type: "HealthCheck";
+	specialist: string;
+	diagnosisCodes?: Array<Diagnose['code']>;
+	healthCheckRating: number;
+}
+
+export interface OccupationalHealthcareEntries {
+	id: string;
+	description: string;
+	date: string;
+	type: "OccupationalHealthcare";
+	specialist: string;
+	diagnosisCodes?: Array<Diagnose['code']>; 
+	employerName: string;
+	sickLeave?: SickLeave;
+}
+
+export interface HospitalEntries {
+	id: string;
+	description: string;
+	date: string;
+	type: "Hospital";
+	specialist: string;
+	diagnosisCodes?: Array<Diagnose['code']>;
+	discharge: Discharge;
+}
+
+export type NewHealthCheckEntry = Omit<HealthCheckEntries, 'id'>;
+
+export type NewOccupationalHealthcareEntry = 
+	Omit<OccupationalHealthcareEntries, 'id'>;
+
+export type NewHospitalEntry = Omit<HospitalEntries, 'id'>;
+
 export interface Diagnose {
 	code: string;
 	name: string;

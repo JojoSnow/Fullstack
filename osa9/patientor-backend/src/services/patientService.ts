@@ -1,6 +1,6 @@
 import {v1 as uuid} from 'uuid';
 import patients from '../../data/patients';
-import {NonSensitivePatients, NewPatient, Patients, Patient} from '../types';
+import {NonSensitivePatients, NewPatient, Patients, Patient, Entry,  NewHealthCheckEntry, HealthCheckEntries, NewOccupationalHealthcareEntry, OccupationalHealthcareEntries, NewHospitalEntry, HospitalEntries} from '../types';
 const newId = uuid();
 
 const getNonSensitivePatients = (): NonSensitivePatients[] => {
@@ -29,8 +29,50 @@ const getPatientById = (id: string): Patient => {
 	return foundPatient[0];
 };
 
+const getPatientEntries = (id: string): Entry[] => {
+	const patient = getPatientById(id);
+	return patient.entries;
+};
+
+const addHealthCheckEntry = (entry: NewHealthCheckEntry, id: string): HealthCheckEntries => {
+	const entries = getPatientEntries(id);
+
+	const newEntry = {
+		id: newId,
+		...entry
+	}
+	entries.push(newEntry);
+	return newEntry;
+}
+
+const addOccupationalHealthcareEntry = (entry: NewOccupationalHealthcareEntry, id: string): OccupationalHealthcareEntries => {
+	const entries = getPatientEntries(id);
+
+	const newEntry = {
+		id: newId,
+		...entry
+	}
+	entries.push(newEntry);
+	return newEntry;
+}
+
+const addHospitalEntry = (entry: NewHospitalEntry, id: string): HospitalEntries => {
+	const entries = getPatientEntries(id);
+
+	const newEntry = {
+		id: newId,
+		...entry
+	}
+	entries.push(newEntry);
+	return newEntry;
+}
+
 export default {
 	getNonSensitivePatients,
 	addPatient,
-	getPatientById
+	getPatientById,
+	getPatientEntries,
+	addHealthCheckEntry,
+	addOccupationalHealthcareEntry,
+	addHospitalEntry
 };

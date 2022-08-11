@@ -16,7 +16,7 @@ const toNewPatient = ({name, dateOfBirth, ssn, gender, occupation, entries}: Fie
 
 const isString = (text: unknown): text is string => {
 	return typeof text === 'string' || text instanceof String;
-}
+};
 
 const parseName = (name: unknown) => {
 	if (!name || !isString(name)) {
@@ -68,6 +68,6 @@ const parseEntries = (entries: unknown): Entry[] => {
 		throw new Error('Incorrect or missing entry/entries: ' + entries);
 	}
 	return entries;
-}
+};
 
 export default toNewPatient;

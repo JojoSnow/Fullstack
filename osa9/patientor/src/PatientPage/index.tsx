@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 import { useParams } from 'react-router-dom';
-import { Typography, List, ListItem } from '@material-ui/core';
+import { Typography, List, ListItem, Button } from '@material-ui/core';
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import WorkIcon from '@material-ui/icons/Work';
 import HealingIcon from '@material-ui/icons/Healing';
@@ -92,6 +92,10 @@ const PatientPage = () => {
 					</ul>
 					)
 				)}
+
+			<Button variant="contained" color="primary">
+				Add Entry
+			</Button>
 				
 			</div>
 			
