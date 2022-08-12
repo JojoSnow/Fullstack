@@ -18,7 +18,7 @@ const isString = (text: unknown): text is string => {
 	return typeof text === 'string' || text instanceof String;
 };
 
-const parseName = (name: unknown) => {
+const parseName = (name: unknown): string => {
 	if (!name || !isString(name)) {
 		throw new Error('Incorrect or missing name');
 	}
@@ -59,12 +59,9 @@ const parseOccupation = (occupation: unknown): string => {
 	return occupation;
 };
 
-const isEntry = (entries: unknown): entries is Entry[] => {
-	return entries instanceof Array;
-};
-
-const parseEntries = (entries: unknown): Entry[] => {
-	if (!entries || !isEntry(entries)) {
+const parseEntries = (entries: any): Entry[] => {
+	entries = [];
+	if (!entries) {
 		throw new Error('Incorrect or missing entry/entries: ' + entries);
 	}
 	return entries;

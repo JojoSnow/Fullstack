@@ -22,36 +22,35 @@ const isNumber = (num: unknown): num is number => {
 	return typeof num === 'number' || num instanceof Number;
 };
 
-const parseDate = (date: unknown) => {
+const parseDate = (date: unknown): string => {
 	if (!date || !isString(date)) {
 		throw new Error('Incorrect or missing date');
 	}
 	return date;
 };
 
-const parseSpecialist = (specialist: unknown) => {
+const parseSpecialist = (specialist: unknown): string => {
 	if (!specialist || !isString(specialist)) {
 		throw new Error('Incorrect or missing specialist');
 	}
 	return specialist;
 };
 
-const parseDesc = (description: unknown) => {
+const parseDesc = (description: unknown): string => {
 	if (!description || !isString(description)) {
 		throw new Error('Incorrect or missing description');
 	}
 	return description;
 };
 
-const parseHCR = (healthCheckRating: unknown) => {
+const parseHCR = (healthCheckRating: unknown): number => {
 	if (!healthCheckRating || !isNumber(healthCheckRating)) {
 		throw new Error('Incorrect or missing healthCheckRating');
 	}
 	return healthCheckRating;
 };
 
-const parseDiagCodes = (diagnosisCodes: any) => {
-	console.log(diagnosisCodes)
+const parseDiagCodes = (diagnosisCodes: any): string[] => {
 	return diagnosisCodes;
 };
 
