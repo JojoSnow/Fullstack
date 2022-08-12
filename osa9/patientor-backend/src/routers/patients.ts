@@ -46,7 +46,6 @@ router.post('/:id/', (req, res) => {
 		if (req.body.type === 'HealthCheck') {
 			const newEntry = toNewHealthCheckEntry(req.body);
 			const addedHealthCheckEntry = patientService.addHealthCheckEntry(newEntry, id);
-			console.log(newEntry);
 			res.json(addedHealthCheckEntry);
 		} 
 		if (req.body.type === 'OccupationalHealthcare') {

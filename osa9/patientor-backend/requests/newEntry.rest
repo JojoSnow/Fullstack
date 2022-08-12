@@ -6,6 +6,5 @@ Content-Type: application/json
 	"specialist": "MD House",
 	"type": "HealthCheck",
 	"description": "Yearly control visit.",
-	"healthCheckRating": 2,
-	"diagnosisCodes": ["Z57.1"]
+	"healthCheckRating": 2
 }

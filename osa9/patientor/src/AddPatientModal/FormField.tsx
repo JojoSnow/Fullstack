@@ -79,12 +79,11 @@ interface NumberProps extends FieldProps {
 }
 
 export const NumberField = ({ field, label, min, max }: NumberProps) => {
-  const [value, setValue] = useState<number>();
-
+  const [value, setValue] = useState<number>(Number);
+  
   return (
     <div style={{ marginBottom: "1em" }}>
       <TextFieldMUI
-        fullWidth
         label={label}
         placeholder={String(min)}
         type="number"
@@ -93,10 +92,11 @@ export const NumberField = ({ field, label, min, max }: NumberProps) => {
         onChange={(e) => {
           const valueChange = parseInt(e.target.value);
           if (valueChange === undefined) return;
-          if (valueChange > max) setValue(max);
+          if (valueChange >= max) setValue(max);
           else if (valueChange <= min) setValue(min);
+          // next row gives NaN when erasing the number and not using arrows 
           else setValue(Math.floor(valueChange));
-      }}
+        }}
       />
       <Typography variant="subtitle2" style={{ color: "red" }}>
         <ErrorMessage name={field.name} />

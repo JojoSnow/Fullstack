@@ -15,7 +15,7 @@ export type Action =
       payload: DiagnoseList;
     }
   | {
-      type: any;
+      type: string;
       payload: HealthCheckEntry;
     };
 
@@ -69,11 +69,14 @@ export const reducer = (state: State, action: Action): State => {
         }
       };
     case "ADD_ENTRY":
-      console.log(action);
+      console.log('action: ', action);
       console.log('state: ', state);
       return {
         ...state,
-        
+        patients: <{patient: Patient}> {
+          ...state.patients,
+          [action.payload.id]: action.payload
+        }
       };
     default:
       return state;

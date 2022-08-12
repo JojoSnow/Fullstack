@@ -50,7 +50,10 @@ const parseHCR = (healthCheckRating: unknown): number => {
 	return healthCheckRating;
 };
 
-const parseDiagCodes = (diagnosisCodes: any): string[] => {
+const parseDiagCodes = (diagnosisCodes: any): string[] | undefined => {
+	if (!diagnosisCodes) {
+		return undefined;
+	}
 	return diagnosisCodes;
 };
 

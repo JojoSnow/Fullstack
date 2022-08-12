@@ -17,7 +17,7 @@ const HospitalEntry = ({entry}: {entry: Entry}): JSX.Element => (
 	<li>
 		<LocalHospitalIcon /> {entry.date} 
 		<p><i>{entry.description}</i></p>
-		<p>diagnosed by {entry.specialist}</p>
+		<p>Diagnosed by {entry.specialist}</p>
 	</li>	
 );
 
@@ -25,7 +25,7 @@ const OccupationalHealthcareEntry = ({entry}: {entry: Entry}): JSX.Element => (
 	<li>
 		<WorkIcon /> {entry.date}
 		<p><i>{entry.description}</i></p>
-		<p>diagnosed by {entry.specialist}</p>
+		<p>Diagnosed by {entry.specialist}</p>
 	</li>		
 );
 
@@ -33,7 +33,7 @@ const HealthCheckEntryy = ({entry}: {entry: Entry}): JSX.Element => (
 	<li>
 		<HealingIcon /> {entry.date} 
 		<p><i>{entry.description}</i></p>
-		<p>diagnosed by {entry.specialist}</p>
+		<p>Diagnosed by {entry.specialist}</p>
 	</li>	
 );
 
@@ -60,8 +60,8 @@ const PatientPage = () => {
 	const [{ patient }, dispatch] = useStateValue();
 	const { id } = useParams<{ id: string }>();
 
-  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string | undefined>();
+	const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+	const [error, setError] = React.useState<string | undefined>();
 
 	React.useEffect(() => {	
 		const fetchPatient = async () => {
@@ -96,8 +96,9 @@ const PatientPage = () => {
 					values
 				);
 				dispatch(addEntry(newEntry));
+				closeModal();
 			}
-			closeModal();
+			
 		} catch (e: unknown) {
 			if (axios.isAxiosError(e)) {
 				console.error(e?.response?.data || "Unrecognized axios error");
@@ -119,7 +120,7 @@ const PatientPage = () => {
 					<ListItem>Occupation: {foundPatient.occupation}</ListItem>
 				</List>
 				<Typography align="left" variant="h6">Entries</Typography>
-				{foundPatient?.entries.map((entry: Entry) => (
+				{foundPatient?.entries?.map((entry: Entry) => (
 					<ul style={{
 							listStyleType: 'none', 
 							borderColor: 'black', 

@@ -17,9 +17,9 @@ const typeOptions: TypeOption[] = [
 	{ value: Type.OccupationalHealthcare, label: "OccupationalHealthcare" },
 ];
  
-const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
+export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 	const [{ diagnoses }] = useStateValue();
-	const diagnosesList = Object.values(diagnoses).map(d => d);
+	const diagnosesList = Object.values(diagnoses);
 	
 	return (
 		<Formik
@@ -35,6 +35,8 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 			validate={values => {
 				const requiredError = "Field is required";
 				const errors: {[field: string]: string} = {};
+				// VALUES NOT UPDATING GRRRRRRR
+				console.log(values);
 				if (!values.date) {
 					errors.date = requiredError;
 				}
@@ -52,9 +54,9 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 				}
 				return errors;
 			}}
-	>	
+		>	
 			{({ isValid, dirty, setFieldValue, setFieldTouched }) => {
-
+				console.log(isValid, dirty);
 				return (
 
 				<Form className="form ui">
@@ -72,22 +74,24 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 						component={TextField}
 					/>
 					<Field
+						fullWidth
 						label="Description"
 						placeholder="Description"
 						name="description"
 						component={TextField}
 					/>
-					<DiagnosisSelection
-						setFieldValue={setFieldValue}
-						setFieldTouched={setFieldTouched}
-						diagnoses={diagnosesList}
-					/>    
 					<Field
-						label="HealthCheckRating"
+						label="Health Check Rating"
+						name="HealthCheckRating"
 						min={0}
 						max={4}
 						component={NumberField}	
 					/>
+					<DiagnosisSelection
+						setFieldValue={setFieldValue}
+						setFieldTouched={setFieldTouched}
+						diagnoses={diagnosesList}
+					/>    					
 					<Grid>
 						<Grid item>
 							<Button
@@ -107,7 +111,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 								}}
 								type="submit"
 								variant="contained"
-								disabled={!dirty || !isValid}
+								// disabled={!dirty || !isValid}
 							>
 								Add
 							</Button>

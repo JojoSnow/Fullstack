@@ -19,7 +19,6 @@ const addPatient = (patient: NewPatient): Patients => {
 		id: newId,
 		...patient
 	};
-	console.log(newPatient);
 	patients.push(newPatient);
 	return newPatient;
 };
