@@ -38,7 +38,7 @@ router.get('/:id/entries', (req, res) => {
 	res.send(entries);
 });
 
-router.post('/:id/', (req, res) => {
+router.post('/:id/entries', (req, res) => {
 	const id = req.params.id;
 	
 	try {

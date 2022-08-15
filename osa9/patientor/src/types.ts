@@ -68,17 +68,17 @@ export interface SickLeave {
 }
 
 export interface HealthCheckEntry extends BaseEntry {
-	type: "HealthCheck";
+	type: Type.HealthCheck;
 	healthCheckRating: HealthCheckRating;
 }
 
 export interface HospitalEntry extends BaseEntry {
-	type: "Hospital";
+	type: Type.Hospital;
 	discharge: Discharge;
 }
 
 export interface OccupationalHealthcareEntry extends BaseEntry {
-	type: "OccupationalHealthcare";
+	type: Type.OccupationalHealthcare;
 	employerName: string;
 	sickLeave?: SickLeave;
 }

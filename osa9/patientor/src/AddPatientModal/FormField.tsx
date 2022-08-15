@@ -6,12 +6,12 @@ import {
   MenuItem,
   TextField as TextFieldMUI,
   Typography,
-  InputLabel
+  InputLabel,
+  FormLabel
 } from "@material-ui/core";
 import { Diagnosis, Gender, Type } from "../types";
 import Input from '@material-ui/core/Input';
 
-// structure of a single option
 export type GenderOption = {
   value: Gender;
   label: string;
@@ -22,7 +22,6 @@ export type TypeOption = {
   label: string;
 };
 
-// props for select field component
 type SelectFieldProps = {
   name: string;
   label: string;
@@ -69,41 +68,22 @@ export const TextField = ({ field, label, placeholder }: TextProps) => (
   </div>
 );
 
-/*
-  for exercises 9.24.-
-*/
 interface NumberProps extends FieldProps {
   label: string;
   min: number;
   max: number;
 }
 
-export const NumberField = ({ field, label, min, max }: NumberProps) => {
-  const [value, setValue] = useState<number>(Number);
-  
-  return (
-    <div style={{ marginBottom: "1em" }}>
-      <TextFieldMUI
-        label={label}
-        placeholder={String(min)}
-        type="number"
-        {...field}
-        value={value}
-        onChange={(e) => {
-          const valueChange = parseInt(e.target.value);
-          if (valueChange === undefined) return;
-          if (valueChange >= max) setValue(max);
-          else if (valueChange <= min) setValue(min);
-          // next row gives NaN when erasing the number and not using arrows 
-          else setValue(Math.floor(valueChange));
-        }}
-      />
+export const NumberField = ({ field, label, min, max }: NumberProps) => (
+  <div style={{ paddingTop: "0.5em" }}>
+      <FormLabel>{label}</FormLabel>
+      <Field {...field} type="number" min={min} max={max} />
+
       <Typography variant="subtitle2" style={{ color: "red" }}>
         <ErrorMessage name={field.name} />
       </Typography>
-    </div>
-  );
-};
+  </div>
+);
 
 export const DiagnosisSelection = ({
   diagnoses,
@@ -116,10 +96,11 @@ export const DiagnosisSelection = ({
 }) => {
   const [selectedDiagnoses, setDiagnoses] = useState<string[]>([]);
   const field = "diagnosisCodes";
+
   const onChange = (data: string[]) => {    
     setDiagnoses([...data]);
-    setFieldTouched(field, true);
     setFieldValue(field, selectedDiagnoses);
+    setFieldTouched(field, true);
   };
 
   const stateOptions = diagnoses.map((diagnosis) => ({
@@ -127,6 +108,8 @@ export const DiagnosisSelection = ({
     text: `${diagnosis.name} (${diagnosis.code})`,
     value: diagnosis.code,
   }));
+
+  console.log(selectedDiagnoses);
 
   return (
     <FormControl style={{ width: 552, marginBottom: '30px' }}>

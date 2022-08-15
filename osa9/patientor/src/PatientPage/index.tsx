@@ -8,7 +8,7 @@ import WorkIcon from '@material-ui/icons/Work';
 import HealingIcon from '@material-ui/icons/Healing';
 
 import { useStateValue, setPatient, addEntry } from "../state";
-import { Patient, Entry, HealthCheckEntry } from '../types';
+import { Patient, Entry, HealthCheckEntry, Type } from '../types';
 import { apiBaseUrl } from '../constants';
 import { EntryFormValues } from '../AddEntryModal/AddEntryForm';
 import AddEntryModal from '../AddEntryModal';
@@ -39,11 +39,11 @@ const HealthCheckEntryy = ({entry}: {entry: Entry}): JSX.Element => (
 
 const EntryDetails = ({entry}: {entry: Entry}): JSX.Element => {
 	switch (entry.type) {
-		case 'Hospital':
+		case Type.Hospital:
 			return <HospitalEntry entry={entry}/>;
-		case 'OccupationalHealthcare':
+		case Type.OccupationalHealthcare:
 			return <OccupationalHealthcareEntry entry={entry} />;
-		case 'HealthCheck':
+		case Type.HealthCheck:
 			return <HealthCheckEntryy entry={entry} />;
 		default:
 			return assertNever(entry);
@@ -85,9 +85,7 @@ const PatientPage = () => {
 		setModalOpen(false);
 		setError(undefined);
 	};
-
-	const foundPatient = Object.values(patient).find(p => p.id === id);	
-
+	
 	const submitNewEntry = async (values: EntryFormValues) => {
 		try {
 			if (id) {
@@ -109,6 +107,8 @@ const PatientPage = () => {
 			}
 		}
 	};
+
+	const foundPatient = Object.values(patient).find(p => p.id === id);	
 
 	if (foundPatient) {
 		return (
