@@ -25,5 +25,8 @@
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-native": "^4.0.0"
   },
-  "private": true
+  "private": true,
+  "resolutions": {
+    "react-devtools-core": "~4.25.0"
+  }
 }
