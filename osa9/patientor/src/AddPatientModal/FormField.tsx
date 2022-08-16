@@ -75,7 +75,7 @@ interface NumberProps extends FieldProps {
 }
 
 export const NumberField = ({ field, label, min, max }: NumberProps) => (
-  <div style={{ paddingTop: "0.5em" }}>
+  <div>
       <FormLabel>{label}</FormLabel>
       <Field {...field} type="number" min={min} max={max} />
 
@@ -108,8 +108,6 @@ export const DiagnosisSelection = ({
     text: `${diagnosis.name} (${diagnosis.code})`,
     value: diagnosis.code,
   }));
-
-  console.log(selectedDiagnoses);
 
   return (
     <FormControl style={{ width: 552, marginBottom: '30px' }}>

@@ -2,9 +2,9 @@ import { Button, Grid } from "@material-ui/core";
 import { Field, Form, Formik } from "formik";
 import { DiagnosisSelection, NumberField, SelectField, TextField, TypeOption } from "../AddPatientModal/FormField";
 import { useStateValue } from "../state";
-import { HealthCheckEntry, Type } from "../types";
+import { Entry, Type } from "../types";
 
-export type EntryFormValues = Omit<HealthCheckEntry, "id">;
+export type EntryFormValues = Omit<Entry, "id">;
 
 interface Props {
 	onSubmit: (values: EntryFormValues) => void;
@@ -19,6 +19,63 @@ const typeOptions: TypeOption[] = [
  
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 	const [{ diagnoses }] = useStateValue();
+
+	const additionalFields = (type: Type) => {
+		switch (type) {
+			case "HealthCheck":
+				return (
+					<Field
+						label="HealthCheckRating"
+						name="healthCheckRating"
+						min={0}
+						max={4}
+						component={NumberField}	
+					/>
+				);
+			case "Hospital":
+				return (
+					<>
+					<Field
+						label="Discharge Date"
+						placeholder="YYYY-MM-DD"
+						name="discharge.date"
+						component={TextField}
+					/>
+					<Field
+						label="Discharge Criteria"
+						placeholder="Discharge Criteria"
+						name="discharge.criteria"
+						component={TextField}
+					/>
+					</>
+				);
+			case "OccupationalHealthcare":
+				return (
+					<>
+					<Field
+						label="Employer"
+						placeholder="Employer Name"
+						name="employer"
+						component={TextField}
+					/>
+					<Field
+						label="Sick Leave Start Day"
+						placeholder="YYYY-MM-DD"
+						name="sickLeave.startDate"
+						component={TextField}
+					/>
+					<Field
+						label="Sick Leave End Date"
+						placeholder="YYYY-MM-DD"
+						name="sickLeave.endDate"
+						component={TextField}
+					/>
+					</>
+				);
+			default:
+				break;
+		}
+	};
 	
 	return (
 		<Formik
@@ -28,41 +85,67 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 				specialist: "",
 				diagnosisCodes: [],
 				description: "",
-				healthCheckRating: 0
+				healthCheckRating: 0,
+				employer: "",
+				sickLeave: {
+				startDate: "",
+				endDate: "",
+				},
+				discharge: {
+				date: "",
+				criteria: "",
+				},
 			}}
 			onSubmit={onSubmit}
 			validate={(values) => {
-				console.log(values);
 				const requiredError = "Field is required";
+				const formatError = "Field is in wrong format";
 				const errors: {[field: string]: string} = {};
+
 				if (!values.date) {
 					errors.date = requiredError;
 				}
-				if (!values.type) {
-					errors.type = requiredError;
-				}
-				if (!values.specialist) {
-					errors.specialist = requiredError;
+				if (!/^\d{4}-[0-1]{1}\d{1}-[0-3]{1}\d{1}$/.test(values.date)) {
+					errors.date = formatError;
 				}
 				if (!values.description) {
 					errors.description = requiredError;
 				}
-				if (!values.healthCheckRating) {
+				if (!values.specialist) {
+					errors.specialist = requiredError;
+				}
+				if (values.type === Type.HealthCheck) {
+					if (!values.healthCheckRating) {
 					errors.healthCheckRating = requiredError;
+					}
+					if (!values.healthCheckRating) {
+					errors.healthCheckRating = requiredError;
+					}
+					}
+				if (values.type === Type.Hospital) {
+					if (!values.discharge.criteria || !values.discharge.date) {
+						errors.discharge = requiredError;
+					}
+					}
+				if (values.type === Type.OccupationalHealthcare) {
+					if (!values.employer) {
+						errors.employer = requiredError;
+					}
 				}
 				return errors;
 			}}
 		>	
-			{({ isValid, dirty, setFieldValue, setFieldTouched }) => {
+			{({ isValid, dirty, setFieldValue, setFieldTouched, values }) => {
+				console.log(values);
 				return (
 					<Form className="form ui">
+						<SelectField label="Type" name="type" options={typeOptions} />
 						<Field
 							label="Date"
 							placeholder="YYYY-MM-DD"
 							name="date"
 							component={TextField}
 						/>
-						<SelectField label="Type" name="type" options={typeOptions} />
 						<Field
 							label="Specialist"
 							placeholder="Specialist"
@@ -76,24 +159,18 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 							name="description"
 							component={TextField}
 						/>
-						<Field
-							label="HealthCheckRating"
-							name="healthCheckRating"
-							min={0}
-							max={4}
-							component={NumberField}	
-						/>
 						<DiagnosisSelection
 							setFieldValue={setFieldValue}
 							setFieldTouched={setFieldTouched}
 							diagnoses={Object.values(diagnoses)}
-						/>    					
+						/>
+						{additionalFields(values.type)}    					
 						<Grid>
 							<Grid item>
 								<Button
 									color="secondary"
 									variant="contained"
-									style={{ float: "left" }}
+									style={{ float: "left", marginTop: "1em" }}
 									type="button"
 									onClick={onCancel}
 								>
@@ -102,7 +179,7 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 							</Grid>
 							<Grid item>
 								<Button
-									style={{ float: "right" }}
+									style={{ float: "right", marginTop: "1em" }}
 									type="submit"
 									variant="contained"
 									disabled={!dirty || !isValid}
