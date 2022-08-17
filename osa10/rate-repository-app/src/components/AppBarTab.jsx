@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
 import theme from '../style/theme';
@@ -10,16 +10,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AppBarTab = ({ backgroundColor, style, ...props }) => {
+const AppBarTab = ({ style, ...props }) => {
 	const barTabStyle = [
 		styles.container,
-		backgroundColor === 'secondary' && styles.colorSecondary,
 		style
 	];
 
-	return (
-		<View style={barTabStyle} {...props} />
-	);
+	return <View style={barTabStyle} {...props} />;
 };
 
 export default AppBarTab;
