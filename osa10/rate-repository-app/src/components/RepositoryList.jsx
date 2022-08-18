@@ -2,7 +2,7 @@ import { FlatList, View, StyleSheet, Image } from 'react-native';
 
 import theme from '../style/theme';
 import Text from './Text';
-import SubHeading from './Subheading';
+import SubHeading from './SubHeading';
 
 const styles = StyleSheet.create({
 	separator: {
