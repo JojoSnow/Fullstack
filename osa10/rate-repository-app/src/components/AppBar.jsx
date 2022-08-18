@@ -7,14 +7,9 @@ import AppBarTab from './AppBarTab';
 
 const styles = StyleSheet.create({
 	heading: {
-		marginLeft: 10,
-		marginTop: 10,
+		margin: 15,
 		color: theme.colors.textLight,
 		fontWeight: theme.fontWeights.bold
-	},
-	barTabList: {
-		paddingHorizontal: 15,
-		paddingBottom: 15
 	}
 });
 
@@ -22,7 +17,7 @@ const AppBar = () => {
 	
 	return (
 		<Pressable>
-			<AppBarTab style={styles.barTabList}>
+			<AppBarTab>
 				<ScrollView horizontal={true}>
 					<Link to="/" >	
 						<Text style={styles.heading}>Repositories</Text>
