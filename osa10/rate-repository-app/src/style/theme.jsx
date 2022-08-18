@@ -5,7 +5,8 @@ const theme = {
 		textLight: '#e1e6eb',
 		primary: '#0366d6',
 		secondary: '#24292e',
-		bgLight: '#98989c'	
+		bgLight: '#98989c',
+		error: '#a81813'
 	},
 	fontSizes: {
 		body: 14,

@@ -7,18 +7,9 @@ import Text from './Text';
 
 const styles = StyleSheet.create({
 	errorText: {
-		marginTop: 5
-	},
-	input: {
-		marginHorizontal: 10,
-		marginVertical: 7,
-		fontSize: theme.fontSizes.body,
-		borderColor: theme.colors.bgLight,
-		borderStyle: 'solid',
-		borderWidth: 1,
-		borderRadius: 2,
-		paddingHorizontal: 10,
-		paddingVertical: 5
+		color: theme.colors.error,
+		marginLeft: 10,
+		marginBottom: 5
 	}
 });
 
@@ -37,7 +28,7 @@ const FormikTextInput = ({ name, placeholder, ...props }) => {
 				placeholder={placeholder}
 				{...props}
 			/>
-			{showError && <Text style={styles.errorText}>{meta.Error}</Text>}
+			{showError && <Text style={styles.errorText}>{meta.error}</Text>}
 		</>
 	);
 };
