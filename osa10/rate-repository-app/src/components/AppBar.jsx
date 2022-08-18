@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Link } from 'react-router-native';
 
 import theme from '../style/theme';
@@ -7,17 +7,14 @@ import AppBarTab from './AppBarTab';
 
 const styles = StyleSheet.create({
 	heading: {
-		paddingLeft: 10,
-		paddingTop: 10,
+		marginLeft: 10,
+		marginTop: 10,
 		color: theme.colors.textLight,
 		fontWeight: theme.fontWeights.bold
 	},
 	barTabList: {
-		display: 'flex',
-		flexDirection: 'row',
-		paddingLeft: 15,
-		paddingBottom: 15,
-		justifyContent: 'flex-start'
+		paddingHorizontal: 15,
+		paddingBottom: 15
 	}
 });
 
@@ -26,12 +23,15 @@ const AppBar = () => {
 	return (
 		<Pressable>
 			<AppBarTab style={styles.barTabList}>
-				<Link to="/" >	
-					<Text style={styles.heading}>Repositories</Text>
-				</Link>
-				<Link to="/signIn" >	
-					<Text style={styles.heading}>Sign In</Text>
-				</Link>
+				<ScrollView horizontal={true}>
+					<Link to="/" >	
+						<Text style={styles.heading}>Repositories</Text>
+					</Link>
+					<Link to="/signIn" >	
+						<Text style={styles.heading}>Sign In</Text>
+					</Link>
+				</ScrollView>
+				
 			</AppBarTab>
 		</Pressable>
 	);
