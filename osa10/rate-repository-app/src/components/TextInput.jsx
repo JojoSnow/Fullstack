@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		paddingVertical: 5
 	}
-})
+});
 
 const TextInput = ({ style, error, ...props }) => {
 	if (!error) {
@@ -37,8 +37,6 @@ const TextInput = ({ style, error, ...props }) => {
 			<NativeTextInput style={styles.errorInput} placeholderTextColor={theme.colors.bgLight} {...props} />
 		)		
 	}
-
-	
-} 
+};
 
 export default TextInput;
