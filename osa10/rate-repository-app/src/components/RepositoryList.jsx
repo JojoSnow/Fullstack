@@ -111,19 +111,28 @@ const RepositoryItem = ({ item }) => (
 )
 
 const RepositoryList = () => {
-	const { repositories } = useRepositories();
-	
-	const repositoryNodes = repositories
-		? repositories.edges.map(edge => edge.node)
-		: [];
+	const { data, loading } = useRepositories();
+	let repositoryNodes;
 
+	if (data) {
+		repositoryNodes = data.repositories
+		? data.repositories.edges.map(edge => edge.node)
+		: [];
+	}
 	return (
-		<FlatList
-		data={repositoryNodes}
-		ItemSeparatorComponent={ItemSeparator}
-		renderItem={RepositoryItem}
-	/>
-	)
+		<View>
+			{loading || !data ?
+				<Text>Fetching data ...</Text>
+				:
+				<FlatList
+					data={repositoryNodes}
+					ItemSeparatorComponent={ItemSeparator}
+					renderItem={RepositoryItem}
+				/>
+			}
+		</View>
+	);
+	
 };
 
 export default RepositoryList;
