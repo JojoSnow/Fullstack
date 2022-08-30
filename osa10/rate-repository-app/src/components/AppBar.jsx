@@ -28,8 +28,7 @@ const AppBar = () => {
 			console.error(e);
 		}
 	};
-
-	console.log('user:', user.data.me)
+	
 	return (
 		<Pressable>
 			<AppBarTab>
