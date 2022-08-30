@@ -1,6 +1,7 @@
 import { Pressable, View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-native';
 
 import theme from '../style/theme';
 import Text from './Text';
@@ -54,14 +55,17 @@ const SignInForm = ({ onSubmit }) => {
 };
 
 const SignIn = () => {
-	const [signIn] = useSignIn();
+	const [ signIn ] = useSignIn();
+	const navigate = useNavigate();
 
 	const onSubmit = async (values) => {
 		const { username, password } = values;
 
 		try {
 			const { data } = await signIn({ username, password });
-			console.log(data.authenticate.accessToken);
+			if ( data.authenticate.accessToken ) {
+				navigate('../', { replace: true })
+			}
 		} catch (e) {
 			console.error(e);
 		}
@@ -69,11 +73,11 @@ const SignIn = () => {
 
 	return (
 		<Formik 
-			initialValues={initialValues} 
-			onSubmit={onSubmit}
-			validationSchema={validationSchema}
+			initialValues={ initialValues } 
+			onSubmit={ onSubmit }
+			validationSchema={ validationSchema }
 		>
-			{({ handleSubmit }) => <SignInForm onSubmit={handleSubmit}/>}
+			{({ handleSubmit }) => <SignInForm onSubmit={ handleSubmit }/>}
 		</Formik>
 	);
 };
