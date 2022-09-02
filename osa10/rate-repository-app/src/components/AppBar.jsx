@@ -29,28 +29,43 @@ const AppBar = () => {
 		}
 	};
 	
-	return (
-		<Pressable>
-			<AppBarTab>
-				<ScrollView horizontal={true}>
-					<Link to="/" >	
-						<Text style={styles.heading}>Repositories</Text>
-					</Link>
-					{user.data.me ? 
-					<Link to="/" onPress={onPress}>	
-						<Text style={styles.heading}>Sign Out</Text>
-					</Link> :
-					<Link to="/signIn">	
-						<Text style={styles.heading}>Sign In</Text>
-					</Link>
-					}
-					
-					
-				</ScrollView>
-				
-			</AppBarTab>
-		</Pressable>
-	);
+	if (!user.data) {
+		return (
+			<Pressable>
+				<AppBarTab>
+					<ScrollView horizontal={true}>
+						<Link to="/" >	
+							<Text style={styles.heading}>Repositories</Text>
+						</Link>
+						<Link to="/signIn">	
+							<Text style={styles.heading}>Sign In</Text>
+						</Link>
+					</ScrollView>
+				</AppBarTab>
+			</Pressable>
+		);
+	} else {
+		return (
+			<Pressable>
+				<AppBarTab>
+					<ScrollView horizontal={true}>
+						<Link to="/" >	
+							<Text style={styles.heading}>Repositories</Text>
+						</Link>
+						{user.data.me ? 
+						<Link to="/signIn" onPress={onPress}>	
+							<Text style={styles.heading}>Sign Out</Text>
+						</Link> :
+						<Link to="/signIn">	
+							<Text style={styles.heading}>Sign In</Text>
+						</Link>
+						}
+					</ScrollView>
+				</AppBarTab>
+			</Pressable>
+		);
+	}
+	
 };
 
 export default AppBar;

@@ -104,14 +104,13 @@ const RepositoryCounts = ({item}) => (
 )
 
 const RepositoryItem = ({ item }) => (
-	<View style={styles.item}>
+	<View testID="repositoryItem" style={styles.item}>
 		<RepositoryInfo item={item} />
 		<RepositoryCounts item={item} />		
 	</View>
 )
 
-const RepositoryList = () => {
-	const { data, loading } = useRepositories();
+export const RepositoryListContainer = ({ data, loading }) => {
 	let repositoryNodes;
 
 	if (data) {
@@ -133,6 +132,12 @@ const RepositoryList = () => {
 		</View>
 	);
 	
+};
+
+const RepositoryList = () => {
+	const { data, loading } = useRepositories();
+
+	return <RepositoryListContainer data={ data } loading={ loading } />;
 };
 
 export default RepositoryList;
