@@ -1,6 +1,6 @@
 import { StyleSheet, Text as NativeText } from 'react-native';
 
-import theme from '../style/theme';
+import theme from '../../style/theme';
 
 const styles = StyleSheet.create({
 	subHeading: {

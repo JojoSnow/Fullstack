@@ -3,7 +3,7 @@ import { Link } from 'react-router-native';
 import { useQuery } from '@apollo/client';
 
 import theme from '../style/theme';
-import Text from './Text';
+import Text from './custom/Text';
 import AppBarTab from './AppBarTab';
 import useSignOut from '../hooks/useSignOut';
 

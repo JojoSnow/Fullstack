@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { useField } from 'formik';
 
-import theme from '../style/theme';
+import theme from '../../style/theme';
 import TextInput from './TextInput';
 import Text from './Text';
 
