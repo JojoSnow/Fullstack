@@ -11,12 +11,9 @@ import useRepository from '../hooks/useRepository';
 const Repository = () => {
 	const { id } = useParams();
 	const { data, loading } = useRepository(id);
-	
-	console.log(data);
 
 	const handlePress = () => {
-		console.log('press')
-		// Linking.openURL(data.url);
+		Linking.openURL(data.repository.url);
 	};
 
 	return (
@@ -25,7 +22,7 @@ const Repository = () => {
 			<Text>Fetching data ...</Text>			
 			:
 			<View>
-				<RepositoryItem item={data} />
+				<RepositoryItem item={data.repository} />
 				<Pressable onPress={handlePress}>
 					<Button>
 						<ButtonText>Open in Github</ButtonText>
