@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 	item: {
 		backgroundColor: 'white',
 		display: 'flex',
-		padding: 15
+		padding: 15,
 	},
 	image: {
 		height: 50,
@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
 		borderRadius: 5
 	},
 	info: {
-		paddingLeft: 15
+		paddingLeft: 15,
+		flexShrink: 1
 	},
 	infoPart: {
 		flexDirection: 'row',
