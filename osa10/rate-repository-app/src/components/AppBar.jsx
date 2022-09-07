@@ -53,12 +53,19 @@ const AppBar = () => {
 							<Text style={styles.heading}>Repositories</Text>
 						</Link>
 						{user.data.me ? 
-						<Link to="/signIn" onPress={onPress}>	
-							<Text style={styles.heading}>Sign Out</Text>
-						</Link> :
-						<Link to="/signIn">	
-							<Text style={styles.heading}>Sign In</Text>
-						</Link>
+							<>
+								<Link to="/review" >
+									<Text style={styles.heading}>Create a Review</Text>
+								</Link>
+								<Link to="/signIn" onPress={onPress}>	
+									<Text style={styles.heading}>Sign Out</Text>
+								</Link> 
+							</>
+							
+							:
+							<Link to="/signIn">	
+								<Text style={styles.heading}>Sign In</Text>
+							</Link>
 						}
 					</ScrollView>
 				</AppBarTab>

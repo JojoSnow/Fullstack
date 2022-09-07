@@ -52,12 +52,12 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const Repository = (data, handlePress) => {
+const Repository = (data) => {
 	if (data) {
 		return (
 			<View style={styles.view}>
 				<RepositoryItem item={data.data.repository} />
-				<Pressable onPress={handlePress}>
+				<Pressable onPress={() => Linking.openURL(data.data.repository.url)}>
 					<Button>
 						<ButtonText>Open in Github</ButtonText>
 					</Button>
@@ -86,9 +86,7 @@ const ReviewItem = ({review}) => {
 				<Text style={styles.date}>{getDate(review.createdAt)}</Text>
 				<Text>{review.text}</Text>
 			</View>
-			
 		</View>
-		
 	);
 };
 
@@ -103,10 +101,6 @@ const SingleRepository = () => {
 		: [];
 	}
 
-	const handlePress = () => {
-		Linking.openURL(data.repository.url);
-	};
-
 	return (
 		<View>
 			{loading || !data ?
@@ -116,10 +110,9 @@ const SingleRepository = () => {
 				data={reviews}
 				renderItem={({item}) => <ReviewItem review={item} />}
 				keyExtractor={({id}) => id}
-				ListHeaderComponent={() => <Repository data={data} handlePress={handlePress} />}
+				ListHeaderComponent={() => <Repository data={data} />}
 				ItemSeparatorComponent={() => <ItemSeparator />}
 			/>
-			
 			}
 		</View>
 	);
