@@ -13,8 +13,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-
-
 const FormikNumberInput = ({ name, placeholder, ...props }) => {
 	const [field, meta, helpers] = useField(name);
 	const showError = meta.touched && meta.error;
