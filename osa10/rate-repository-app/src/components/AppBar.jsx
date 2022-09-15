@@ -1,13 +1,12 @@
 import { StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Link } from 'react-router-native';
-import { useQuery } from '@apollo/client';
 
 import theme from '../style/theme';
 import Text from './custom/Text';
 import AppBarTab from './AppBarTab';
 import useSignOut from '../hooks/useSignOut';
 
-import { USER } from '../graphql/queries';
+import useUser from '../hooks/useUser';
 
 const styles = StyleSheet.create({
 	heading: {
@@ -18,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
-	const user = useQuery(USER);
+	const {data} = useUser();
 	const signOut = useSignOut();
 
 	const onPress = () => {
@@ -29,7 +28,7 @@ const AppBar = () => {
 		}
 	};
 	
-	if (!user.data) {
+	if (!data) {
 		return (
 			<Pressable>
 				<AppBarTab>
@@ -52,10 +51,15 @@ const AppBar = () => {
 						<Link to="/" >	
 							<Text style={styles.heading}>Repositories</Text>
 						</Link>
-						{user.data.me ? 
+						{data.me ? 
 							<>
 								<Link to="/review" >
 									<Text style={styles.heading}>Create a Review</Text>
+								</Link>
+								<Link to="/myReviews" >
+									<Text style={styles.heading}>
+										My Reviews
+									</Text>
 								</Link>
 								<Link to="/signIn" onPress={onPress}>	
 									<Text style={styles.heading}>Sign Out</Text>

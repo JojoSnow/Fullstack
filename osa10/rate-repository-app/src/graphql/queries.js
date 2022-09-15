@@ -102,10 +102,40 @@ export const GET_REPOSITORY = gql`
 `;
 
 export const USER = gql`
-	query User{
+	query User($includeReviews: Boolean = false) {
 		me {
 			id
 			username
+			createdAt
+			reviews @include(if: $includeReviews) {
+				totalCount
+				pageInfo {
+					hasPreviousPage
+					hasNextPage
+					startCursor
+					endCursor
+				}
+				edges {
+					cursor
+					node {
+						id
+						user {
+							id
+							username
+							createdAt
+						}
+						userId
+						repositoryId
+						rating
+						createdAt
+						text
+						repository {
+							id
+							fullName
+						}
+					}
+				}
+			}
 		}
 	}	
 `;
