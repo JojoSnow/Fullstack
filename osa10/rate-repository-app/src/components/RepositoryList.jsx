@@ -134,6 +134,8 @@ export class RepositoryListContainer extends React.Component {
 						data={repositoryNodes}
 						ItemSeparatorComponent={ItemSeparator}
 						ListHeaderComponent={this.renderHeader}
+						onEndReached={props.onEndReach}
+						onEndReachedThreshold={0.5}
 						renderItem={({item}) => (
 							<View>
 								<Pressable onPress={() => {
@@ -156,14 +158,20 @@ const RepositoryList = () => {
 	const [order, setOrder] = useState({
 		orderBy: 'CREATED_AT', 
 		orderDirection: 'DESC',
-		searchKeyword: search
+		searchKeyword: search,
+		first: 8
 	});
-	const { data, loading } = useRepositories(order);
+	const { data, loading, fetchMore } = useRepositories(order);
 	const navigate = useNavigate();
+
+	const onEndReach = () => {
+		fetchMore();
+	};
 
 	return <RepositoryListContainer 
 		data={data} 
 		loading={loading} 
+		onEndReach={onEndReach}
 		navigate={navigate} 
 		order={order} 
 		setOrder={setOrder} 
