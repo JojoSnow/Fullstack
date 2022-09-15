@@ -78,6 +78,7 @@ const ReviewItem = (props) => {
 					onPress: async () => {
 						try {
 							await props.deleteReview(props.review.id);
+							props.refetch()
 						} catch (e) {
 							console.error(e);
 						}
@@ -119,7 +120,7 @@ const ReviewItem = (props) => {
 const MyReviews = () => {
 	const [ deleteReview ] = useDeleteReview();
 	const navigate = useNavigate();
-	const { data, loading } = useUser({
+	const { data, loading, refetch } = useUser({
 		includeReviews: true
 	});
 
@@ -138,7 +139,7 @@ const MyReviews = () => {
 			:
 			<FlatList 
 				data={reviews}
-				renderItem={({item}) => <ReviewItem review={item} deleteReview={deleteReview} navigate={navigate} />}
+				renderItem={({item}) => <ReviewItem review={item} deleteReview={deleteReview} navigate={navigate} refetch={refetch} />}
 				keyExtractor={({id}) => id}
 				ItemSeparatorComponent={() => <ItemSeparator />}
 			/>
