@@ -35,3 +35,5 @@ router.delete('/:id', blogFinder, async (req, res) => {
 	}
 	res.status(204).end();
 });
+
+module.export = router;
