@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Sequelize, Model, QueryTypes, DataTypes } = require('sequelize');
+const { Sequelize, Model, DataTypes } = require('sequelize');
 const express = require('express');
 const app = express();
 
@@ -37,17 +37,32 @@ Note.init({
 	modelName: 'note'
 });
 
-app.get('/api/notes', async (req, res) => {
+Note.sync();
+
+app.get('/api/notes/', async (req, res) => {
 	const notes = await Note.findAll();
+
+	console.log(JSON.stringify(notes, null, 2));
+
 	res.json(notes);
 });
 
-app.post('/api/notes', async (req, res) => {
+app.post('/api/notes/', async (req, res) => {
 	try {
 		const note = await Note.create(req.body);
 		res.json(note);
 	} catch (error) {
-		return res.status(400).json({ error })
+		return res.status(400).json({ error });
+	}
+});
+
+app.get('/api/notes/:id', async (req, res) => {
+	const note = await Note.findByPk(req.params.id);
+	if (note) {
+		console.log(note.toJSON());
+		res.json(note);
+	} else {
+		res.status(404).end();
 	}
 });
 

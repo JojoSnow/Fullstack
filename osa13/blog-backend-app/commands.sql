@@ -2,3 +2,5 @@ CREATE TABLE blogs ( id SERIAL PRIMARY KEY, author text, url text NOT NULL,title
 
 insert into blogs (author, url, title) values ('Anthony Doerr', 'anthonydoerr.com', 'The Light We Can See');
 insert into blogs (author, url, title) values ('Stephen King', 'stephenking.com', 'The Horrors of Homes');
+
+DELETE FROM blogs WHERE id=2;
