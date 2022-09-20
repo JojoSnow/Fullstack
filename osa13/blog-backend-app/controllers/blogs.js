@@ -1,14 +1,30 @@
+const jwt = require('jsonwebtoken');
 const router = require('express').Router();
 
-const { Blog } = require('../models');
+const { Blog, User } = require('../models');
 
 router.get('/', async (req, res) => {
 	const blogs = await Blog.findAll();
 	res.json(blogs);
 });
 
-router.post('/', async (req, res) => {
-	const blog = await Blog.create(req.body);
+const tokenExtractor = (req, res, next) => {
+	const authorization = req.get('authorization');
+	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+		try {
+			req.decodedToken = jwt.verify(authorization.substring(7), SECRET);
+		} catch {
+			return res.status(401).json({ error: 'Token is invalid'});
+		}
+	} else {
+		return res.status(401).json({ error: 'Token is missing' });
+	}
+	next();
+};
+
+router.post('/', tokenExtractor, async (req, res) => {
+	const user = await User.findByPk(req.decodedToken.id);
+	const blog = await Blog.create({...req.body, userId: user.id});
 	res.json(blog);
 });
 
@@ -25,15 +41,17 @@ router.get('/:id', blogFinder, async (req, res) => {
 	}
 });
 
-router.delete('/:id', blogFinder, async (req, res) => {
+router.delete('/:id', blogFinder, tokenExtractor, async (req, res) => {
+	const user = await User.findByPk(req.decodedToken.id);
 	if (req.blog) {
-		await req.blog.destroy();
+		if (req.blog.userId === user.id) {
+			await req.blog.destroy();
+		}
 	}
 	res.status(204).end();
 });
 
 router.put('/:id', blogFinder, async (req, res) => {
-	console.log(req.body.likes)
 	if(req.blog) {
 		if (req.body.likes) {
 			req.blog.likes = req.body.likes;
