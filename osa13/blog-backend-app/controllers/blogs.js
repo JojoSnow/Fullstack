@@ -8,12 +8,8 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-	try {
-		const blog = await Blog.create(req.body);
-		res.json(blog);
-	} catch (error) {
-		return res.status(400).json({ error });
-	}
+	const blog = await Blog.create(req.body);
+	res.json(blog);
 });
 
 const blogFinder = async (req, res, next) => {
@@ -37,11 +33,16 @@ router.delete('/:id', blogFinder, async (req, res) => {
 });
 
 router.put('/:id', blogFinder, async (req, res) => {
+	console.log(req.body.likes)
 	if(req.blog) {
-		req.blog.likes = req.body.likes;
-		await req.blog.update();
-		await req.blog.save();
-		res.json(req.blog);
+		if (req.body.likes) {
+			req.blog.likes = req.body.likes;
+			await req.blog.update();
+			await req.blog.save();
+			res.json(req.blog);
+		} else {
+			res.status(400).end();
+		}
 	} else {
 		res.status(404).end();
 	}
