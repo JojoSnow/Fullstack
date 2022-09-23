@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 			[sequelize.fn('sum', sequelize.col('likes')), 'likes']
 		],
 		order: [
-			[sequelize.fn('sum', sequelize.col('likes')), 'DESC']
+			['likes', 'DESC']
 		]
 		
 });
