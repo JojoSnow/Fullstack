@@ -2,7 +2,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-	"author": "Dark Horse",
-	"url": "darkhorse.com",
-	"title": "Vox Machina"
+	"author": "Anthony Doerr",
+	"url": "anthonydoerr.com",
+	"title": "All The Light We Can See",
+	"year": "2016"
 }
