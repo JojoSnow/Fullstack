@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-	"author": "Anthony Doerr",
-	"url": "anthonydoerr.com",
-	"title": "All The Light We Can See",
-	"year": "2016"
+	"author": "Neil Gaiman",
+	"url": "neilgaiman.com",
+	"title": "American Pods",
+	"year": "2005"
 }

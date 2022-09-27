@@ -10,7 +10,6 @@ module.exports = {
 			},
 			read: {
 				type: DataTypes.BOOLEAN,
-				allowNull: false,
 				default: false
 			},
 			user_id: {
