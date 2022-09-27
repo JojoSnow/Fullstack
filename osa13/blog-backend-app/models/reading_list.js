@@ -14,12 +14,12 @@ ReadingList.init({
 		type: DataTypes.BOOLEAN,
 		defaultValue: false
 	},
-	user_id: {
+	userId: {
 		type: DataTypes.INTEGER,
 		allowNull: false,
 		references: { model: 'users', key: 'id' }
 	},
-	blog_id: {
+	blogId: {
 		type: DataTypes.INTEGER,
 		allowNull: false,
 		references: { model: 'blogs', key: 'id' }

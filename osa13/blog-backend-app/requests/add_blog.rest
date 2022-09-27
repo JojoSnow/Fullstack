@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-	"author": "Neil Gaiman",
-	"url": "neilgaiman.com",
-	"title": "American Pods",
-	"year": "2005"
+	"author": "Dark Horse",
+	"url": "darkhorse.com",
+	"title": "Vox Machina",
+	"year": "2010"
 }
