@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-	"author": "Dark Horse",
-	"url": "darkhorse.com",
-	"title": "Vox Machina",
-	"year": "2010"
+	"author": "Anthony Doerr",
+	"url": "https://google.com",
+	"title": "All the light we cannot see",
+	"year": "2014"
 }

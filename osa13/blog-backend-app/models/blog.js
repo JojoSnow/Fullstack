@@ -28,6 +28,7 @@ Blog.init({
 	},
 	year: {
 		type: DataTypes.INTEGER,
+		defaultValue: null,
 		validate: {
 			min: {
 				args: 1991,

@@ -14,21 +14,26 @@ ReadingList.init({
 		type: DataTypes.BOOLEAN,
 		defaultValue: false
 	},
+	listId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: { model: 'lists', key: 'id' }
+    },
+    blogId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: { model: 'blogs', key: 'id' }
+    },
 	userId: {
 		type: DataTypes.INTEGER,
-		allowNull: false,
-		references: { model: 'users', key: 'id' }
-	},
-	blogId: {
-		type: DataTypes.INTEGER,
-		allowNull: false,
-		references: { model: 'blogs', key: 'id' }
+        allowNull: false,
+        references: { model: 'users', key: 'id' }
 	}
 }, {
 	sequelize,
 	underscored: true,
 	timestamps: false,
-	modelName: 'reading_list'
+	modelName: 'reading_lists'
 });
 
 module.exports = ReadingList;

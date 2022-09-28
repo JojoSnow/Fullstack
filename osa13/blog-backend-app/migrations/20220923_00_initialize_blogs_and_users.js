@@ -22,10 +22,11 @@ module.exports = {
 			},
 			likes: {
 				type: DataTypes.INTEGER,
-				default: 0
+				defaultValue: 0
 			},
 			year: {
 				type: DataTypes.INTEGER,
+				defaultValue: null,
 				validate: {
 					min: {
 						args: 1991,

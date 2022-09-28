@@ -4,7 +4,7 @@ const { ReadingList } = require('../models');
 
 router.get('/', async (req, res) => {
 	const readingList = await ReadingList.findAll({
-		attributes: { exclude: ['id', 'read'] }
+		attributes: { exclude: ['id'] }
 	});
 
 	res.json(readingList);
