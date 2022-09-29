@@ -52,8 +52,8 @@ const tokenExtractor = (req, res, next) => {
 	next();
 };
 
-router.post('/', tokenExtractor, async (req, res) => {
-	const user = await User.findByPk(req.decodedToken.id);
+router.post('/', async (req, res) => {
+	const user = await User.findByPk(1);
 	const blog = await Blog.create({...req.body, userId: user.id});
 	res.json(blog);
 });

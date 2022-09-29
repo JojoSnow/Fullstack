@@ -14,11 +14,6 @@ List.init({
         type: DataTypes.INTEGER,
         allowNull: false,
         references: { model: 'users', key: 'id' }
-    },
-	blogId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: { model: 'blogs', key: 'id' }
     }
 }, {
 	sequelize,

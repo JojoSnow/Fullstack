@@ -6,11 +6,14 @@ const List = require('./list');
 User.hasMany(Blog);
 Blog.belongsTo(User);
 
-User.belongsToMany(Blog, { through: List, as: 'readings' });
-Blog.belongsToMany(ReadingList, { through: ReadingList, as: 'readinglists' });
+User.hasMany(List);
+List.belongsTo(User);
 
-// List.hasMany(Blog);
-// Blog.belongsTo(List);
+List.belongsToMany(Blog, { through: ReadingList });
+Blog.belongsToMany(List, { through: ReadingList });
+
+List.hasMany(ReadingList);
+ReadingList.belongsTo(List);
 
 module.exports = {
 	Blog,

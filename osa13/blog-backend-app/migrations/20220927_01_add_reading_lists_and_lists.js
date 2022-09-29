@@ -12,11 +12,6 @@ module.exports = {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				references: { model: 'blogs', key: 'id' }
-			},
-			user_id: {
-				type: DataTypes.INTEGER,
-				allowNull: false,
-				references: { model: 'users', key: 'id' }
 			}
 		});
 		await queryInterface.createTable('lists', {
@@ -29,15 +24,10 @@ module.exports = {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false
 			},
-            user_id: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                references: { model: 'users', key: 'id' },
-            },
-			blog_id: {
+			user_id: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
-				references: { model: 'blogs', key: 'id' }
+				references: { model: 'users', key: 'id' }
 			}
         });
 		await queryInterface.addColumn('reading_lists', 'list_id', {
