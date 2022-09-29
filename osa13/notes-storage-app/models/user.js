@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model, DataTypes, Op } = require('sequelize');
 
 const { sequelize } = require('../utils/db');
 
@@ -31,7 +31,33 @@ User.init({
 	sequelize,
 	underscored: true,
 	timestamps: false,
-	modelName: 'user'
+	modelName: 'user',
+	defaultScope: {
+		where: {
+			disabled: false
+		}
+	},
+	scopes: {
+		admin: {
+			where: {
+				admin: true
+			}
+		},
+		disabled: {
+			where: {
+				disabled: true
+			}
+		},
+		name(value) {
+			return {
+				where: {
+					name: {
+						[Op.iLike]: value
+					}
+				}
+			}
+		}
+	}
 });
 
 module.exports = User;
